@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/src/painting/border_radius.dart';
 import 'profile_page.dart';
+import 'topic_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class MainPage extends StatelessWidget {
                 icon: const Icon(Icons.add_circle_outline_outlined),
                 tooltip: 'Add Subject',
                 onPressed: () {
-
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage()));
                 }
               ),
               IconButton(

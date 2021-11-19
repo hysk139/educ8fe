@@ -40,37 +40,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Container(
       decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: [Theme.of(context).accentColor, Theme.of(context).primaryColor],
-          begin: const FractionalOffset(0, 0),
-          end: const FractionalOffset(1.0, 0.0),
-          stops: [0.0, 1.0],
-          tileMode: TileMode.clamp,
-        ),
+        color: Colors.white,
       ),
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0,
         duration: Duration(milliseconds: 1200),
         child: Center(
           child: Container(
-            height: 140.0,
-            width: 140.0,
+            height: 270.0,
+            width: 180.0,
             child: Center(
-              child: ClipOval(
-                child: Icon(Icons.android_outlined, size: 128,), //put your logo here
-              ),
+              child: Text(
+                'ED\nUC\n∞',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.normal),
+              ), //put your logo here
             ),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              shape: BoxShape.rectangle,
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 2.0,
-                  offset: Offset(5.0, 3.0),
-                  spreadRadius: 2.0,
-                )
-              ]
+              border: Border.all(width: 2, color: Colors.black),
             ),
           ),
         ),

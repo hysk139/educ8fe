@@ -3,16 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 
+import 'profile_page.dart';
 import 'login_page.dart';
 
-class RegistrationPage extends  StatefulWidget{
+class EditProfilePage extends  StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-     return _RegistrationPageState();
+    return _EditProfilePage();
   }
 }
 
-class _RegistrationPageState extends State<RegistrationPage>{
+class _EditProfilePage extends State<EditProfilePage>{
   double _headerHeight = 10;
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
@@ -26,42 +27,52 @@ class _RegistrationPageState extends State<RegistrationPage>{
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+        appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            //tambahin back kemana
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-          },
-          icon: Icon(Icons.arrow_back_ios_rounded),
-        ),
+          leading: IconButton(
+            onPressed: () {
+              //tambahin back kemana
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
+            icon: Icon(Icons.arrow_back_ios_rounded),
+          ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
+          flexibleSpace:Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               height: _headerHeight,
             ),
+            Container(
+              alignment: Alignment.topLeft,
+              margin: EdgeInsets.fromLTRB(20,0,5,10),
+              child:
+              Text(
+                'Edit Profile',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(20,0,5,10),
+              child:
+              Text(
+                'Hi, Tedi Setiawan',
+                style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor, fontWeight: FontWeight.normal),
+              ),
+            ),
             SafeArea(
               child: Stack(
                 children: [
                   Container(
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.fromLTRB(20,0,5,10),
-                    child:
-                    Text(
-                      'REGISTER',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 50, 10, 10),
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     alignment: Alignment.center,
                     child: Column(
@@ -198,46 +209,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                 ),
                                 decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               ),
-                              SizedBox(height: 15.0),
-
-                              FormField<bool>(
-                                builder: (state) {
-                                  return Column(
-                                    children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          Checkbox(
-                                              value: checkboxValue,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  checkboxValue = value!;
-                                                  state.didChange(value);
-                                                });
-                                              }),
-                                          Text("I accept all terms and conditions.", style: TextStyle(color: Colors.grey),),
-                                        ],
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          state.errorText ?? '',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(color: Theme.of(context).errorColor,fontSize: 12,),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                },
-                                validator: (value) {
-                                  if (!checkboxValue) {
-                                    return 'You need to accept terms and conditions';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              SizedBox(height: 15.0),
-
+                              SizedBox(height: 25.0),
                               Container(
                                 decoration: ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
@@ -245,7 +217,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                     child: Text(
-                                      "Register".toUpperCase(),
+                                      "edit profile".toUpperCase(),
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal,
@@ -275,9 +247,9 @@ class _RegistrationPageState extends State<RegistrationPage>{
                 ],
               ),
             ),
-        ],
+          ],
+        ),
       ),
-     ),
     );
   }
 
