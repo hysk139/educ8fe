@@ -31,7 +31,12 @@ dependencies:
   hexcolor: ^2.0.4
   font_awesome_flutter: ^9.1.0
   otp_text_field: ^1.1.1
+<<<<<<< HEAD
   http: ^0.13.4
+=======
+  http: 0.13.4
+
+>>>>>>> 94659afee0a26e7bad9c2c3a55c6b1b9098aaf51
 
 dev_dependencies:
   flutter_test:

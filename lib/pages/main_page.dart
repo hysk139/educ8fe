@@ -115,71 +115,71 @@ class MainPage extends StatelessWidget {
             children:  [
               Expanded(child:
               FutureBuilder<List<Subjects>>(
-                  future : fetchSubjects(text),
-                  builder: (context, snapshot){
+                future : fetchSubjects(text),
+                builder: (context, snapshot){
 
-                    if (snapshot.hasData) {
-                      return Container(
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: EdgeInsets.all(5),
-                                  height: 130,
-                                  child: Stack(
-                                      children: [
-                                        Positioned(
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            child: Container(
+                  if (snapshot.hasData) {
+                    return Container(
+                        child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin: EdgeInsets.all(5),
+                                height: 130,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
 
-                                              height : 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                      bottomLeft: Radius.circular(20),
-                                                      bottomRight: Radius.circular(20),
-                                                      topRight: Radius.circular(20),
-                                                      topLeft: Radius.circular(20)
-                                                  ),
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment.bottomCenter,
-                                                      end : Alignment.topCenter,
-                                                      colors: [
-                                                        Colors.purpleAccent.withOpacity(0.8),
-                                                        Colors.purple.withOpacity(0.8)
-                                                      ]
-                                                  )
-                                              ),
-                                            )
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                Text(snapshot.data![index].name!,
-                                                    style: TextStyle(color: Colors.white, fontSize: 25))
-                                              ],
+                                            height : 120,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                    bottomLeft: Radius.circular(20),
+                                                    bottomRight: Radius.circular(20),
+                                                    topRight: Radius.circular(20),
+                                                    topLeft: Radius.circular(20)
+                                                ),
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.bottomCenter,
+                                                    end : Alignment.topCenter,
+                                                    colors: [
+                                                      Colors.purpleAccent.withOpacity(0.8),
+                                                      Colors.purple.withOpacity(0.8)
+                                                    ]
+                                                )
                                             ),
-                                          ),
                                         )
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 10),
+                                            Text(snapshot.data![index].name!,
+                                                style: TextStyle(color: Colors.white, fontSize: 25))
+                                          ],
+                                        ),
+                                      ),
+                                    )
 
-                                      ]
-                                  ),
-                                );
-                                //return Text(snapshot.data![index].name!);
-                              }
-                          )
-                      );
-                    }
-                    else{
-                      return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
-                    }
+                                  ]
+                                ),
+                              );
+                              //return Text(snapshot.data![index].name!);
+                            }
+                        )
+                    );
                   }
+                  else{
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }
               )
               ),
               Expanded(child:
@@ -190,7 +190,6 @@ class MainPage extends StatelessWidget {
                     if (snapshot.hasData) {
                       return Container(
                           child: ListView.builder(
-                            //itemCount: snapshot.data!.length,
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext context, int index) {

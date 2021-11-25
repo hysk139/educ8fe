@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +8,7 @@ class ProfilePage extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-     return _ProfilePageState();
+    return _ProfilePageState();
   }
 }
 
@@ -32,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage>{
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         flexibleSpace:Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+            color: Colors.white,
           ),
         ),
 
