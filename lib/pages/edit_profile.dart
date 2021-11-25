@@ -55,7 +55,7 @@ class _EditProfilePage extends State<EditProfilePage>{
               child:
               Text(
                 'Edit Profile',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20),
               ),
             ),
             SizedBox(height: 10,),
@@ -65,7 +65,7 @@ class _EditProfilePage extends State<EditProfilePage>{
               child:
               Text(
                 'Hi, Tedi Setiawan',
-                style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
               ),
             ),
             SafeArea(
@@ -87,7 +87,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Name',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                               Container(
@@ -110,7 +110,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'E-Mail',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                               Container(
@@ -134,7 +134,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Phone Number',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                               Container(
@@ -159,7 +159,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Password',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                               Container(
@@ -185,7 +185,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Confirm Password',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                               Container(

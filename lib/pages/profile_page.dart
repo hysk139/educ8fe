@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage>{
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(50)
                       ),
-                      child: Text('Tedi Setiawan', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.normal))
+                      child: Text('Tedi Setiawan', style: TextStyle(fontSize: 20, color: Colors.white))
                   ),
                   SizedBox(height: 20,),
                   Container(

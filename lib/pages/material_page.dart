@@ -45,11 +45,12 @@ class materialPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-
+        foregroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           onPressed: () {
             //tambahin back kemana
@@ -87,7 +88,7 @@ class materialPage extends StatelessWidget {
             Container(
               height: 2.0,
               width: 400.0,
-              color: Colors.grey,
+              color: Theme.of(context).primaryColor,
             ),
             TextField(
               decoration: InputDecoration(
@@ -100,6 +101,7 @@ class materialPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: (){
           createAlertDialog(context);
         },

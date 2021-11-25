@@ -16,6 +16,7 @@ class LoginUiApp extends StatelessWidget {
       title: 'Flutter Login UI',
       theme: ThemeData(
         primaryColor: warna,
+        fontFamily: 'montserrat',
         scaffoldBackgroundColor: Colors.grey.shade100,
         primarySwatch: Colors.grey,
       ),
