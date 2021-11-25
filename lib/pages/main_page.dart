@@ -177,7 +177,7 @@ class MainPage extends StatelessWidget {
                     );
                   }
                   else{
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
                   }
                 }
               )
