@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/models/users.dart';
 import 'package:http/http.dart' as http;
+import 'login_page.dart';
 import 'main_page.dart';
 import 'edit_profile.dart';
 
@@ -39,6 +41,38 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage>{
   double _headerHeight = 10;
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel", style: TextStyle(color: Theme.of(context).primaryColor)),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue", style: TextStyle(color: Theme.of(context).primaryColor)),
+      onPressed:  () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Logout Confirmation"),
+      content: Text("Are you sure, you want to logout?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +168,24 @@ class _ProfilePageState extends State<ProfilePage>{
                                             child: ListTile(
                                               title: Text("Phone"),
                                               subtitle: Text(snapshot.data![index].phone_number!),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10.0),
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.fromLTRB(3,10,5,10),
+                                            decoration: ThemeHelper().buttonBoxDecoration(context),
+                                            child: ElevatedButton(
+                                              style: ThemeHelper().buttonStyle(context),
+                                              child: Padding(
+                                                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                                child: Text('LogOut'.toUpperCase(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),),
+                                              ),
+                                              onPressed:  () async{
+                                                showAlertDialog(context);
+                                                }
+                                                //After successful login we will redirect to profile page. Let's create profile page now
+                                                //
                                             ),
                                           ),
                                         ],

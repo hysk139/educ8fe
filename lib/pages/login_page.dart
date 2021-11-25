@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage>{
   double _headerHeight = 100;
   final TextEditingController _controllerUser = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  Key _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +94,16 @@ class _LoginPageState extends State<LoginPage>{
                                 ),
                               ),
                               Container(
-                                child:
-                                TextFormField(
+                                child: TextFormField(
                                   controller: _controllerUser,
-                                  decoration: ThemeHelper().textInputDecoration('@mail.com'),
+                                  decoration: ThemeHelper().textInputDecoration("@mail.com"),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (val) {
+                                    if(val!.isEmpty || !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
+                                      return "Enter a valid email address";
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               ),
@@ -116,30 +122,52 @@ class _LoginPageState extends State<LoginPage>{
                                   controller: _controllerPassword,
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration('Password'),
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "Please enter your password";
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               ),
-                              SizedBox(height: 15.0),
+                              SizedBox(height: 30.0),
                               Container(
-                                alignment: Alignment.topLeft,
-                                margin: EdgeInsets.fromLTRB(3,10,5,10),
                                 decoration: ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(context),
                                   child: Padding(
-                                    padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                    child: Text('LogIn'.toUpperCase(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),),
+                                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                    child: Text(
+                                      "login".toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed:  () async{
-                                    Future<bool> match = authenticate(_controllerUser.text, _controllerPassword.text);
-                                    if (await match){
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage(text: userId,)));
-                                    }
-                                    //After successful login we will redirect to profile page. Let's create profile page now
-                                    //
-                                  },
-                                ),
+                                  onPressed: () async {
+                                    Future<bool> match = authenticate(
+                                        _controllerUser.text,
+                                        _controllerPassword.text);
+                                    {
+                                      if (_formKey.currentState!.validate() &&
+                                          await match) {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MainPage(text: userId,)
+                                            ),
+                                                (Route<dynamic> route) => false
+                                        );
+                                      };
+                                    };
+                                  }
+                                  )
                               ),
+
                               Container(
                                 alignment: Alignment.topLeft,
                                 margin: EdgeInsets.fromLTRB(10,80,10,20),

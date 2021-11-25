@@ -138,7 +138,41 @@ class _MainPageState extends State<MainPage> {
 
                   if (snapshot.hasData) {
                     return Container(
-                        child: ListView.builder(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
+                        child: StaggeredGridView.countBuilder(
+                          itemCount: snapshot.data!.length,
+                          crossAxisCount: 4,
+                          itemBuilder: (BuildContext context, int index) => new Container(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.purple,
+                              ),
+                              child: Column(
+                                children:
+                                [
+                                  Text(snapshot.data![index].name!,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                                  ),
+                                  const Divider(
+                                    color: Colors.white,
+                                    height: 25,
+                                    thickness: 3,
+                                    indent: 5,
+                                    endIndent: 5,
+                                  ),
+                                ],
+                              )
+                              ),
+
+                          staggeredTileBuilder: (int index) =>
+                          new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        )
+
+                      /*ListView.builder(
                             itemCount: snapshot.data!.length,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (BuildContext context, int index) {
@@ -190,7 +224,7 @@ class _MainPageState extends State<MainPage> {
                               );
                               //return Text(snapshot.data![index].name!);
                             }
-                        )
+                        )*/
                     );
                   }
                   else{
@@ -226,7 +260,7 @@ class _MainPageState extends State<MainPage> {
                                               },
                                             ),
                                             Text(snapshot.data![index].title!,
-                                                style: TextStyle(color: Colors.black, fontSize: 25)),
+                                                style: TextStyle(color: Colors.black)),
                                           ],
                                         ),
                                       ],
