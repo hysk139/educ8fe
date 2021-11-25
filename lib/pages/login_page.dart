@@ -38,7 +38,6 @@ Future<bool> authenticate(String username, String password) async{
     }
   });
   return match;
-
 }
 
 class LoginPage extends StatefulWidget{
@@ -48,13 +47,12 @@ class LoginPage extends StatefulWidget{
   _LoginPageState createState() => _LoginPageState();
 }
 
-
-
 class _LoginPageState extends State<LoginPage>{
   double _headerHeight = 100;
   final TextEditingController _controllerUser = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   Key _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
 
@@ -97,7 +95,7 @@ class _LoginPageState extends State<LoginPage>{
                               ),
                               Container(
                                 child:
-                                TextField(
+                                TextFormField(
                                   controller: _controllerUser,
                                   decoration: ThemeHelper().textInputDecoration('@mail.com'),
                                 ),
@@ -114,7 +112,7 @@ class _LoginPageState extends State<LoginPage>{
                                 ),
                               ),
                               Container(
-                                child: TextField(
+                                child: TextFormField(
                                   controller: _controllerPassword,
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration('Password'),
@@ -133,12 +131,10 @@ class _LoginPageState extends State<LoginPage>{
                                     child: Text('LogIn'.toUpperCase(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),),
                                   ),
                                   onPressed:  () async{
-
                                     Future<bool> match = authenticate(_controllerUser.text, _controllerPassword.text);
                                     if (await match){
                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage(text: userId,)));
                                     }
-
                                     //After successful login we will redirect to profile page. Let's create profile page now
                                     //
                                   },

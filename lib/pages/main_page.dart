@@ -12,8 +12,7 @@ import 'profile_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-
-
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 Future<List<Subjects>> fetchSubjects(int? userId) async {
   final response = await http
@@ -34,8 +33,8 @@ List<Subjects> parseSubjects(String responseBody) {
 }
 
 Future<List<Todo>> fetchTodo() async {
-  final response = await http
-      .get(Uri.parse('https://teameduc8.herokuapp.com/api/todo'));
+  final response = await
+    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo'));
 
   if (response.statusCode == 200) {
     return compute(parseTodo, response.body);
@@ -51,15 +50,34 @@ List<Todo> parseTodo(String responseBody) {
   return parsed.map<Todo>((json) => Todo.fromJson(json)).toList();
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget{
   final int? text;
 
-  // receive data from the FirstScreen as a parameter
   MainPage({Key? key, @required this.text}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  // receive data from the FirstScreen as a parameter
+  //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
+
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Theme.of(context).primaryColor;
+      }
+      return Theme.of(context).primaryColor;
+    }
+
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
@@ -104,7 +122,7 @@ class MainPage extends StatelessWidget {
                 icon: const Icon(Icons.settings),
                 tooltip: 'Settings',
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage(text: widget.text)));
                 },
               ),
             ],
@@ -115,7 +133,7 @@ class MainPage extends StatelessWidget {
             children:  [
               Expanded(child:
               FutureBuilder<List<Subjects>>(
-                future : fetchSubjects(text),
+                future : fetchSubjects(widget.text),
                 builder: (context, snapshot){
 
                   if (snapshot.hasData) {
@@ -167,7 +185,6 @@ class MainPage extends StatelessWidget {
                                         ),
                                       ),
                                     )
-
                                   ]
                                 ),
                               );
@@ -193,7 +210,41 @@ class MainPage extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext context, int index) {
-                                return Container(
+
+                                return Column(
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Checkbox(
+                                              checkColor: Colors.white,
+                                              fillColor: MaterialStateProperty.resolveWith(getColor),
+                                              value: isChecked,
+                                              onChanged: (bool? value) {
+                                                setState((){
+                                                  isChecked = value!;
+                                                });
+                                              },
+                                            ),
+                                            Text(snapshot.data![index].title!,
+                                                style: TextStyle(color: Colors.black, fontSize: 25)),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+
+
+                                  /*CheckboxListTile(
+                                  title: Text(snapshot.data![index].title!),
+                                  secondary: const Icon(Icons.code),
+                                  autofocus: false,
+                                  activeColor: Colors.green,
+                                  checkColor: Colors.white,
+                                  selected: _value,
+                                  value: _value, onChanged: (bool? value) {  },
+
+                                );
+
+                                Container(
                                   margin: EdgeInsets.all(5),
                                   height: 130,
                                   child: Stack(
@@ -239,7 +290,7 @@ class MainPage extends StatelessWidget {
 
                                       ]
                                   ),
-                                );
+                                );*/
 
                               }
                           )
