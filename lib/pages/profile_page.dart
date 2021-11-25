@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage>{
                 leading: Icon(Icons.screen_lock_landscape_rounded, size: _drawerIconSize, color: Theme.of(context).accentColor,),
                 title: Text('Tab Page', style: TextStyle(fontSize: 17, color: Theme.of(context).accentColor),),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(text : 1,)));
                 },
               ),
               ListTile(
