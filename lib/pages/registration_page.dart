@@ -1,9 +1,53 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
-
+import 'package:flutter_login_ui/models/users.dart';
+import 'package:http/http.dart' as http;
 import 'login_page.dart';
+
+
+
+
+
+
+Future<Users> createUser(String email, String password, String name, String phoneNumber) async {
+  /*Map data = {
+    "email": email,
+    "password" : password,
+    "name" : name,
+    "phone_number": phoneNumber
+  };*/
+  //var body = json.encode(data);
+  final response = await http.post(
+    Uri.parse('https://teameduc8.herokuapp.com/api/users/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      "email": email,
+      "password" : password,
+      "name" : name,
+      "phone_number": phoneNumber
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return Users.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
+  }
+}
+
+
+
+
 
 class RegistrationPage extends  StatefulWidget{
   @override
@@ -17,8 +61,10 @@ class _RegistrationPageState extends State<RegistrationPage>{
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
-
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
 
   @override
@@ -81,6 +127,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               ),
                               Container(
                                 child: TextFormField(
+                                  controller: name,
                                   decoration: ThemeHelper().textInputDecoration('Your Name'),
                                   validator: (val) {
                                     if(val!.isEmpty){
@@ -104,6 +151,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               ),
                               Container(
                                 child: TextFormField(
+                                  controller: email,
                                   decoration: ThemeHelper().textInputDecoration("@mail.com"),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (val) {
@@ -128,6 +176,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               ),
                               Container(
                                 child: TextFormField(
+                                  controller: phoneNumber,
                                   decoration: ThemeHelper().textInputDecoration(
                                       "Phone Number"),
                                   keyboardType: TextInputType.phone,
@@ -253,14 +302,16 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                       ),
                                     ),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    Users newUser = await createUser(email.text, password.text, name.text, phoneNumber.text);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()
+                                        ),
+                                            (Route<dynamic> route) => false
+                                    );
                                     if (_formKey.currentState!.validate()) {
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                              builder: (context) => LoginPage()
-                                          ),
-                                              (Route<dynamic> route) => false
-                                      );
+
                                     }
                                   },
                                 ),
