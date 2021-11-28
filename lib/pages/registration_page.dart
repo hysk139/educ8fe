@@ -14,13 +14,7 @@ import 'login_page.dart';
 
 
 Future<Users> createUser(String email, String password, String name, String phoneNumber) async {
-  /*Map data = {
-    "email": email,
-    "password" : password,
-    "name" : name,
-    "phone_number": phoneNumber
-  };*/
-  //var body = json.encode(data);
+
   final response = await http.post(
     Uri.parse('https://teameduc8.herokuapp.com/api/users/add'),
     headers: <String, String>{
@@ -303,15 +297,15 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                     ),
                                   ),
                                   onPressed: () async {
-                                    Users newUser = await createUser(email.text, password.text, name.text, phoneNumber.text);
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage()
-                                        ),
-                                            (Route<dynamic> route) => false
-                                    );
+                                    //
                                     if (_formKey.currentState!.validate()) {
-
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => LoginPage()
+                                          ),
+                                              (Route<dynamic> route) => false
+                                      );
+                                      Users newUser = await createUser(email.text, password.text, name.text, phoneNumber.text);
                                     }
                                   },
                                 ),

@@ -6,9 +6,54 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/models/users.dart';
+import 'package:flutter_login_ui/pages/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'profile_page.dart';
 import 'login_page.dart';
+
+
+Future<Users> editUser(String email, String password, String name, String phoneNumber, Users currentUser) async {
+  if (email==''){
+    email = currentUser.email!;
+  }
+
+  if (password==''){
+    password = currentUser.password!;
+  }
+  if (name==''){
+    name = currentUser.name!;
+  }
+  if (phoneNumber==''){
+    phoneNumber = currentUser.phone_number!;
+  }
+
+
+  final response = await http.put(
+    Uri.parse('https://teameduc8.herokuapp.com/api/edit/update/users/${currentUser.user_id}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      "email": email,
+      "password" : password,
+      "name" : name,
+      "phone_number": phoneNumber,
+    }),
+
+
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return Users.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
+  }
+}
+
 
 Future<List<Users>> fetchUsers(int? userId) async {
   final response = await http
@@ -47,6 +92,12 @@ class _EditProfilePage extends State<EditProfilePage>{
 
   TextEditingController password = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
+
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +179,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                 ),
                                                 Container(
                                                   child: TextFormField(
+                                                    controller: name,
                                                     decoration: ThemeHelper().textInputDecoration(snapshot.data![index].name!),
                                                     validator: (val) {
                                                       if(val!.isEmpty){
@@ -151,6 +203,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                 ),
                                                 Container(
                                                   child: TextFormField(
+                                                    controller: email,
                                                     decoration: ThemeHelper().textInputDecoration(snapshot.data![index].email!),
                                                     keyboardType: TextInputType.emailAddress,
                                                     validator: (val) {
@@ -175,6 +228,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                 ),
                                                 Container(
                                                   child: TextFormField(
+                                                    controller: phoneNumber,
                                                     decoration: ThemeHelper().textInputDecoration(snapshot.data![index].phone_number!),
                                                     keyboardType: TextInputType.phone,
                                                     validator: (val) {
@@ -260,15 +314,14 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                         ),
                                                       ),
                                                     ),
-                                                    onPressed: () {
-                                                      if (_formKey.currentState!.validate()) {
+                                                    onPressed: () async {
                                                         Navigator.of(context).pushAndRemoveUntil(
                                                             MaterialPageRoute(
-                                                                builder: (context) => ProfilePage(text: widget.text)
+                                                                builder: (context) => MainPage(text: widget.text)
                                                             ),
                                                                 (Route<dynamic> route) => false
                                                         );
-                                                      }
+                                                        Users editedUser = await editUser(email.text, password.text, name.text, phoneNumber.text, snapshot.data![0]);
                                                     },
                                                   ),
                                                 ),
