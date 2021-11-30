@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/helpers/Utils.dart';
 import 'package:flutter_login_ui/models/subjects.dart';
 import 'package:flutter_login_ui/models/todo.dart';
+import 'package:flutter_login_ui/models/topic.dart';
 import 'package:flutter_login_ui/pages/topic_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/src/painting/border_radius.dart';
@@ -13,13 +14,17 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'dart:developer';
 
+
+List<Subjects> subjectPerUser =[];
 Future<List<Subjects>> fetchSubjects(int? userId) async {
   final response = await http
       .get(Uri.parse('https://teameduc8.herokuapp.com/api/subjects/${userId}'));
 
   if (response.statusCode == 200) {
-    return compute(parseSubjects, response.body);
+    subjectPerUser = await compute(parseSubjects, response.body);
+    return subjectPerUser;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -32,9 +37,45 @@ List<Subjects> parseSubjects(String responseBody) {
   return parsed.map<Subjects>((json) => Subjects.fromJson(json)).toList();
 }
 
-Future<List<Todo>> fetchTodo() async {
+Future<List<Topic>> fetchTopic(List<Subjects> allSubjectsInUser) async{
+  List<Topic> allTopic = [];
+  for (int i = 0 ; i < allSubjectsInUser.length ; i++){
+    var topicResponse = await
+    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${allSubjectsInUser[i].subject_id}'));
+
+    if (topicResponse.statusCode == 200) {
+      List<Topic> topicsFromSubject = await compute(parseTopic, topicResponse.body);
+      allTopic.addAll(topicsFromSubject);
+    } else {
+      continue;
+    }
+  }
+  return allTopic;
+}
+
+Future<List<Todo>> fetchAllTodo(int? userId) async {
+  List<Todo> allTodo = [];
+  List<Todo> todoFromTopics = [];
+  List<Subjects> allSubjectsInUser = await fetchSubjects(userId);
+  List<Topic> allTopic = await fetchTopic(allSubjectsInUser);
+  for (Topic topic in allTopic) {
+
+   final todoResponse = await
+    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topic.topic_id}'));
+    if (todoResponse.statusCode == 200) {
+      List<Todo> todoFromTopics = await compute(parseTodo, todoResponse.body);
+      allTodo.addAll(todoFromTopics);
+    } else {
+      continue;
+    }
+  }
+  return allTodo;
+
+}
+
+Future<List<Todo>> fetchTodo(int topicId) async {
   final response = await
-    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo'));
+    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topicId}'));
 
   if (response.statusCode == 200) {
     return compute(parseTodo, response.body);
@@ -49,6 +90,12 @@ List<Todo> parseTodo(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<Todo>((json) => Todo.fromJson(json)).toList();
 }
+
+List<Topic> parseTopic(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
+}
+
 
 class MainPage extends StatefulWidget{
   final int? text;
@@ -172,59 +219,7 @@ class _MainPageState extends State<MainPage> {
                           crossAxisSpacing: 10,
                         )
 
-                      /*ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: EdgeInsets.all(5),
-                                height: 130,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                        child: Container(
 
-                                            height : 120,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.only(
-                                                    bottomLeft: Radius.circular(20),
-                                                    bottomRight: Radius.circular(20),
-                                                    topRight: Radius.circular(20),
-                                                    topLeft: Radius.circular(20)
-                                                ),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.bottomCenter,
-                                                    end : Alignment.topCenter,
-                                                    colors: [
-                                                      Colors.purpleAccent.withOpacity(0.8),
-                                                      Colors.purple.withOpacity(0.8)
-                                                    ]
-                                                )
-                                            ),
-                                        )
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(snapshot.data![index].name!,
-                                                style: TextStyle(color: Colors.white, fontSize: 25))
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ]
-                                ),
-                              );
-                              //return Text(snapshot.data![index].name!);
-                            }
-                        )*/
                     );
                   }
                   else{
@@ -235,9 +230,8 @@ class _MainPageState extends State<MainPage> {
               ),
               Expanded(child:
               FutureBuilder<List<Todo>>(
-                  future : fetchTodo(),
+                  future : fetchAllTodo(widget.text),
                   builder: (context, snapshot){
-
                     if (snapshot.hasData) {
                       return Container(
                           child: ListView.builder(
@@ -254,6 +248,9 @@ class _MainPageState extends State<MainPage> {
                                               fillColor: MaterialStateProperty.resolveWith(getColor),
                                               value: isChecked,
                                               onChanged: (bool? value) {
+                                                /*if (value!){
+                                                  deleteTodo();
+                                                }*/
                                                 setState((){
                                                   isChecked = value!;
                                                 });
