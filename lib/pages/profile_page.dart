@@ -41,23 +41,26 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage>{
   double _headerHeight = 10;
-
+  Color warna = Colors.purple;
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
-      child: Text("Cancel", style: TextStyle(color: Theme.of(context).primaryColor)),
+      child: Text("Cancel", style: TextStyle(color: warna)),
       onPressed:  () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = TextButton(
-      child: Text("Continue", style: TextStyle(color: Theme.of(context).primaryColor)),
+      child: Text("Continue", style: TextStyle(color: warna)),
       onPressed:  () {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       title: Text("Logout Confirmation"),
       content: Text("Are you sure, you want to logout?"),
       actions: [
@@ -87,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage>{
           },
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: warna),
         flexibleSpace:Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -132,16 +135,16 @@ class _ProfilePageState extends State<ProfilePage>{
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                                        border: Border.all(width: 2, color: warna),
                                         color: Colors.white,
                                       ),
-                                      child: Icon(Icons.person, size: 80, color: Theme.of(context).primaryColor),
+                                      child: Icon(Icons.person, size: 80, color: warna),
                                     ),
                                     SizedBox(height: 20, width: 20,),
                                     Container(
                                         padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
                                         decoration: BoxDecoration(
-                                            color: Theme.of(context).primaryColor,
+                                            color: warna,
                                             borderRadius: BorderRadius.circular(50)
                                         ),
                                         child: Text(snapshot.data![index].name!, style: TextStyle(fontSize: 20, color: Colors.white))
@@ -153,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                         children: <Widget>[
                                           Card(
                                             shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                                                side: BorderSide(color: warna, width: 1),
                                                 borderRadius: BorderRadius.circular(10)),
                                             child: ListTile(
                                               title: Text("Email"),
@@ -163,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                           SizedBox(height: 10,),
                                           Card(
                                             shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                                                side: BorderSide(color: warna, width: 1),
                                                 borderRadius: BorderRadius.circular(10)),
                                             child: ListTile(
                                               title: Text("Phone"),
@@ -203,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage>{
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+              return Center(child: CircularProgressIndicator(color: warna));
             }
           }
       )
@@ -224,16 +227,16 @@ class _ProfilePageState extends State<ProfilePage>{
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                      border: Border.all(width: 2, color: warna),
                       color: Colors.white,
                     ),
-                    child: Icon(Icons.person, size: 80, color: Theme.of(context).primaryColor),
+                    child: Icon(Icons.person, size: 80, color: warna),
                   ),
                   SizedBox(height: 20, width: 20,),
                   Container(
                       padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
                       decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: warna,
                           borderRadius: BorderRadius.circular(50)
                       ),
                       child: Text('Tedi Setiawan', style: TextStyle(fontSize: 20, color: Colors.white))
@@ -245,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage>{
                       children: <Widget>[
                         Card(
                           shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                              side: BorderSide(color: warna, width: 1),
                               borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text("Email"),
@@ -255,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage>{
                         SizedBox(height: 10,),
                         Card(
                           shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                              side: BorderSide(color: warna, width: 1),
                               borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text("Phone"),

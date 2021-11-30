@@ -9,6 +9,7 @@ import 'package:flutter_login_ui/pages/topic_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/src/painting/border_radius.dart';
 import 'profile_page.dart';
+import 'topic_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -63,8 +64,51 @@ class _MainPageState extends State<MainPage> {
   // receive data from the FirstScreen as a parameter
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
-
+  Color warna = Colors.purple;
   bool isChecked = false;
+
+  showAlertDialog(BuildContext context) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintText: 'Subject Name',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Submit'),
+      onPressed: () {
+        //masukin ke back end
+        Navigator.of(context).pop(customController.text.toString());
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addsubject = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Edit Topic", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addsubject;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +117,9 @@ class _MainPageState extends State<MainPage> {
         MaterialState.pressed,
       };
       if (states.any(interactiveStates.contains)) {
-        return Theme.of(context).primaryColor;
+        return warna;
       }
-      return Theme.of(context).primaryColor;
+      return warna;
     }
 
     return MaterialApp(
@@ -86,15 +130,15 @@ class _MainPageState extends State<MainPage> {
           appBar: AppBar(
             toolbarHeight: 80,
             backgroundColor: Colors.white,
-            foregroundColor: Theme.of(context).primaryColor,
+            foregroundColor: warna,
             elevation: 0,
             shadowColor: Colors.white,
             bottom: TabBar(
               indicatorPadding: EdgeInsets.fromLTRB(40, 7, 40, 7),
-              unselectedLabelColor: Theme.of(context).primaryColor,
+              unselectedLabelColor: warna,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: warna,
                   borderRadius: BorderRadius.circular(50)
               ),
               tabs: [
@@ -115,7 +159,7 @@ class _MainPageState extends State<MainPage> {
                   icon: const Icon(Icons.add_circle_outline_outlined),
                   tooltip: 'Add Subject',
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage()));
+                    showAlertDialog(context);
                   }
               ),
               IconButton(
@@ -139,96 +183,48 @@ class _MainPageState extends State<MainPage> {
                   if (snapshot.hasData) {
                     return Container(
                         padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
-                        child: StaggeredGridView.countBuilder(
-                          itemCount: snapshot.data!.length,
-                          crossAxisCount: 4,
-                          itemBuilder: (BuildContext context, int index) => new Container(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.purple,
-                              ),
-                              child: Column(
-                                children:
-                                [
-                                  Text(snapshot.data![index].name!,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                        child:
+                        GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage()));
+                        },
+                          child: StaggeredGridView.countBuilder(
+                              itemCount: snapshot.data!.length,
+                              crossAxisCount: 4,
+                              itemBuilder: (BuildContext context, int index) => new Container(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.purple,
                                   ),
-                                  const Divider(
-                                    color: Colors.white,
-                                    height: 25,
-                                    thickness: 3,
-                                    indent: 5,
-                                    endIndent: 5,
-                                  ),
-                                ],
-                              )
-                              ),
-
-                          staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.count(2, index.isEven ? 3 : 2),
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                        )
-
-                      /*ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: EdgeInsets.all(5),
-                                height: 130,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                        child: Container(
-
-                                            height : 120,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.only(
-                                                    bottomLeft: Radius.circular(20),
-                                                    bottomRight: Radius.circular(20),
-                                                    topRight: Radius.circular(20),
-                                                    topLeft: Radius.circular(20)
-                                                ),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.bottomCenter,
-                                                    end : Alignment.topCenter,
-                                                    colors: [
-                                                      Colors.purpleAccent.withOpacity(0.8),
-                                                      Colors.purple.withOpacity(0.8)
-                                                    ]
-                                                )
-                                            ),
-                                        )
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(snapshot.data![index].name!,
-                                                style: TextStyle(color: Colors.white, fontSize: 25))
-                                          ],
-                                        ),
+                                  child: Column(
+                                    children:
+                                    [
+                                      Text(snapshot.data![index].name!,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
                                       ),
-                                    )
-                                  ]
-                                ),
-                              );
-                              //return Text(snapshot.data![index].name!);
-                            }
-                        )*/
+                                      const Divider(
+                                        color: Colors.white,
+                                        height: 25,
+                                        thickness: 3,
+                                        indent: 5,
+                                        endIndent: 5,
+                                      ),
+                                    ],
+                                  )
+                                  ),
+
+                              staggeredTileBuilder: (int index) =>
+                              new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                            )
+                        )
                     );
                   }
                   else{
-                    return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+                    return Center(child: CircularProgressIndicator(color: warna));
                   }
                 }
               )
@@ -331,7 +327,7 @@ class _MainPageState extends State<MainPage> {
                       );
                     }
                     else{
-                      return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+                      return Center(child: CircularProgressIndicator(color: warna));
                     }
                   }
               )

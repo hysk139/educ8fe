@@ -85,6 +85,8 @@ class EditProfilePage extends  StatefulWidget{
 }
 
 class _EditProfilePage extends State<EditProfilePage>{
+  Color warna = Colors.purple;
+
   double _headerHeight = 10;
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
@@ -113,7 +115,7 @@ class _EditProfilePage extends State<EditProfilePage>{
             },
             icon: Icon(Icons.arrow_back_ios_rounded),
           ),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: warna),
           flexibleSpace:Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -152,7 +154,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Hi, ' + snapshot.data![index].name!,
-                                  style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                                  style: TextStyle(fontSize: 20, color: warna),
                                 ),
                               ),
                               SafeArea(
@@ -344,7 +346,7 @@ class _EditProfilePage extends State<EditProfilePage>{
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+              return Center(child: CircularProgressIndicator(color: warna));
             }
           }
       )

@@ -12,6 +12,7 @@ class TopicPage extends  StatefulWidget{
 
 class _TopicPage extends State<TopicPage> {
   double _headerHeight = 10;
+  Color warna = Colors.purple;
   final List<String> topics = <String>['A', 'B', 'C'];
   createAlertDialog(BuildContext context) {
     TextEditingController customController = TextEditingController();
@@ -58,11 +59,11 @@ class _TopicPage extends State<TopicPage> {
           appBar: AppBar(
             toolbarHeight: 80,
             backgroundColor: Colors.white,
-            foregroundColor: Theme.of(context).primaryColor,
+            foregroundColor: warna,
             elevation: 0,
             shadowColor: Colors.white,
             title: const Text(
-                'EDUC 8',
+                'RPL',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal)
             ),
             leading: IconButton(
@@ -96,7 +97,7 @@ class _TopicPage extends State<TopicPage> {
                   child:
                   Text(
                     'RPL',
-                    style: TextStyle(fontSize: 30, color: Theme.of(context).primaryColor, fontWeight: FontWeight.normal),
+                    style: TextStyle(fontSize: 30, color: warna, fontWeight: FontWeight.normal),
                   ),
                 ),
                 SizedBox(height: 10,),

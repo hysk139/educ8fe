@@ -48,6 +48,7 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPageState extends State<LoginPage>{
+  Color warna = Colors.purple;
   double _headerHeight = 100;
   final TextEditingController _controllerUser = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -182,7 +183,7 @@ class _LoginPageState extends State<LoginPage>{
                                               ..onTap = (){
                                                 Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
                                               },
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: warna),
                                           ),
                                         ]
                                     )

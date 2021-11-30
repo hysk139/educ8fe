@@ -51,6 +51,7 @@ class RegistrationPage extends  StatefulWidget{
 }
 
 class _RegistrationPageState extends State<RegistrationPage>{
+  Color warna = Colors.purple;
   double _headerHeight = 10;
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
@@ -75,7 +76,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
           },
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: warna),
         flexibleSpace:Container(
           decoration: BoxDecoration(
             color: Colors.white,
