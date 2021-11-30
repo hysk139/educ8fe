@@ -97,6 +97,52 @@ List<Topic> parseTopic(String responseBody) {
   return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
 }
 
+Future<Subjects> editSubjects(String name, Subjects currentSubject) async {
+  if (name==''){
+    name = currentSubject.name!;
+  }
+
+
+  final response = await http.put(
+    Uri.parse('https://teameduc8.herokuapp.com/api/edit/update/subject/${currentSubject.subject_id}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      "name": name
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return Subjects.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
+  }
+}
+
+Future<Subjects> createSubjects(String subjectName, int userId) async {
+
+  final response = await http.post(
+    Uri.parse('https://teameduc8.herokuapp.com/api/subjects/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode({
+      "name": subjectName,
+      "user_id" : userId,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return Subjects.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create subjects.');
+  }
+}
 
 class MainPage extends StatefulWidget{
   final int? text;
@@ -113,6 +159,55 @@ class _MainPageState extends State<MainPage> {
   //List<Subjects> subjects = Utils.getMockedSubjects();
   Color warna = Colors.purple;
   bool isChecked = false;
+  showAlertDialogEdit(BuildContext context, Subjects currentSubject) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintText: 'Subject Name',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Edit'),
+      onPressed: () {
+        editSubjects(customController.text, currentSubject);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addsubject = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Edit Subject", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addsubject;
+      },
+    );
+  }
 
   showAlertDialog(BuildContext context) {
     TextEditingController customController = TextEditingController();
@@ -132,8 +227,15 @@ class _MainPageState extends State<MainPage> {
       elevation: 5.0,
       child: Text('Add'),
       onPressed: () {
-        //masukin ke back end
-        Navigator.of(context).pop(customController.text.toString());
+        createSubjects(customController.text, widget.text!);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
       },
     );
     // set up the AlertDialog
@@ -242,10 +344,26 @@ class _MainPageState extends State<MainPage> {
                                   child: Column(
                                     children:
                                     [
-                                      Text(snapshot.data![index].name!,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
-                                      ),
+                                          Row(
+                                            children :[
+                                              Text(snapshot.data![index].name!,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: IconButton(
+                                                  icon: const Icon(Icons.edit_outlined),
+                                                  tooltip: 'Edit',
+                                                  onPressed: () {
+                                                    showAlertDialogEdit(context, snapshot.data![index]);
+                                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                  },
+                                                ),
+                                              ),
+                                            ]
+                                          ),
+
                                       const Divider(
                                         color: Colors.white,
                                         height: 25,
@@ -258,7 +376,9 @@ class _MainPageState extends State<MainPage> {
                                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
                                                                                                                                 text2: widget.text)));
                                           }),
+
                                     ],
+
                                   )
                                   ),
 
