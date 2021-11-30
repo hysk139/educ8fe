@@ -143,7 +143,7 @@ Future<Subjects> createSubjects(String subjectName, int userId) async {
     throw Exception('Failed to create subjects.');
   }
 }
-//======================
+
 Future<List<Topic>> fetchTopicMain(int? subjectId) async{
   final topicResponse = await
   http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${subjectId}'));
@@ -175,8 +175,6 @@ class _MainPageState extends State<MainPage> {
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
   Color warna = Colors.purple;
-  //bool isChecked = false;
-
   showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
     Widget info = Column(
       children: [
@@ -226,7 +224,6 @@ class _MainPageState extends State<MainPage> {
       child: Text('Edit'),
       onPressed: () {
         editSubjects(customController.text, currentSubject);
-        //Navigator.of(context).pop();
         Navigator.of(context)
             .pushAndRemoveUntil(
             MaterialPageRoute(
@@ -277,7 +274,6 @@ class _MainPageState extends State<MainPage> {
       child: Text('Add'),
       onPressed: () {
         createSubjects(customController.text, widget.text!);
-        //Navigator.of(context).pop();
         Navigator.of(context)
             .pushAndRemoveUntil(
             MaterialPageRoute(
