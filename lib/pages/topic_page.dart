@@ -1,9 +1,36 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/painting/border_radius.dart';
 import 'main_page.dart';
 import 'material_page.dart';
+import 'package:flutter_login_ui/models/subjects.dart';
+import 'package:http/http.dart' as http;
+
+Future<List<Subjects>> fetchSubjects(int? userId) async {
+  final response = await http
+      .get(Uri.parse('https://teameduc8.herokuapp.com/api/subjects/${userId}'));
+
+  if (response.statusCode == 200) {
+    return compute(parseSubjects, response.body);
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Subjects');
+  }
+}
+
+List<Subjects> parseSubjects(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  return parsed.map<Subjects>((json) => Subjects.fromJson(json)).toList();
+}
 
 class TopicPage extends  StatefulWidget{
+  final int? text;
+
+  TopicPage({Key? key, @required this.text}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _TopicPage();
@@ -62,10 +89,10 @@ class _TopicPage extends State<TopicPage> {
             foregroundColor: warna,
             elevation: 0,
             shadowColor: Colors.white,
-            title: const Text(
+            /*title: const Text(
                 'RPL',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal)
-            ),
+            ),*/
             leading: IconButton(
               onPressed: () {
                 //tambahin back kemana
@@ -101,217 +128,70 @@ class _TopicPage extends State<TopicPage> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
-                        },
-                        child: Card(
-                          color: Colors.grey.shade300,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(width: 20,),
-                              const Expanded(
-                                flex: 6,
-                                child: Text(
-                                    'UML Design',
-                                    textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  icon: const Icon(Icons.edit_outlined),
-                                  tooltip: 'Edit',
-                                  onPressed: () {
-                                    createAlertDialog(context);
-                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                  child: IconButton(
-                                    icon: const Icon(Icons.delete_outline_rounded),
-                                    tooltip: 'Delete',
-                                    onPressed: () {
-                                      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                FutureBuilder<List<Subjects>>(
+                    future : fetchSubjects(widget.text),
+                    builder: (context, snapshot){
+
+                    if (snapshot.hasData) {
+                    return Container(
+                              padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                              child: Column(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: (){
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
                                     },
+                                    child: Card(
+                                      color: Colors.grey.shade300,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15)
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 20,),
+                                          const Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                                'UML Design',
+                                                textAlign: TextAlign.left,
+                                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.edit_outlined),
+                                              tooltip: 'Edit',
+                                              onPressed: () {
+                                                createAlertDialog(context);
+                                                //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                              child: IconButton(
+                                                icon: const Icon(Icons.delete_outline_rounded),
+                                                tooltip: 'Delete',
+                                                onPressed: () {
+                                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                },
+                                              ),
+                                          )
+                                        ]
+                                      )
+                                    ),
                                   ),
-                              )
-                            ]
-                          )
-                        ),
-                      ),
-                    ],
-                  ),
+                                ],
+                              ),
+                            );
+                          }
+                      else{
+                        return Center(child: CircularProgressIndicator(color: warna));
+                      }
+                    }
                 ),
                 SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
-                        },
-                        child: Card(
-                            color: Colors.grey.shade300,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            child: Row(
-                                children: [
-                                  SizedBox(width: 20,),
-                                  const Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      'Software Architecture',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
-                                      tooltip: 'Edit',
-                                      onPressed: () {
-                                        createAlertDialog(context);
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.delete_outline_rounded),
-                                      tooltip: 'Delete',
-                                      onPressed: () {
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  )
-                                ]
-                            )
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
-                        },
-                        child: Card(
-                            color: Colors.grey.shade300,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            child: Row(
-                                children: [
-                                  SizedBox(width: 20,),
-                                  const Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      'Software Process',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
-                                      tooltip: 'Edit',
-                                      onPressed: () {
-                                        createAlertDialog(context);
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.delete_outline_rounded),
-                                      tooltip: 'Delete',
-                                      onPressed: () {
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  )
-                                ]
-                            )
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
-                        },
-                        child: Card(
-                            color: Colors.grey.shade300,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            child: Row(
-                                children: [
-                                  SizedBox(width: 20,),
-                                  const Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      'Software Implementation',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
-                                      tooltip: 'Edit',
-                                      onPressed: () {
-                                        createAlertDialog(context);
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.delete_outline_rounded),
-                                      tooltip: 'Delete',
-                                      onPressed: () {
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                      },
-                                    ),
-                                  )
-                                ]
-                            )
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
