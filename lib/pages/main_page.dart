@@ -61,7 +61,7 @@ Future<List<Todo>> fetchAllTodo(int? userId) async {
   List<Topic> allTopic = await fetchTopic(allSubjectsInUser);
   for (Topic topic in allTopic) {
 
-   final todoResponse = await
+    final todoResponse = await
     http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topic.topic_id}'));
     if (todoResponse.statusCode == 200) {
       List<Todo> todoFromTopics = await compute(parseTodo, todoResponse.body);
@@ -76,7 +76,7 @@ Future<List<Todo>> fetchAllTodo(int? userId) async {
 
 Future<List<Todo>> fetchTodo(int topicId) async {
   final response = await
-    http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topicId}'));
+  http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topicId}'));
 
   if (response.statusCode == 200) {
     return compute(parseTodo, response.body);
@@ -97,7 +97,70 @@ List<Topic> parseTopic(String responseBody) {
   return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
 }
 
+Future<Subjects> editSubjects(String name, Subjects currentSubject) async {
+  if (name==''){
+    name = currentSubject.name!;
+  }
 
+
+  final response = await http.put(
+    Uri.parse('https://teameduc8.herokuapp.com/api/edit/update/subject/${currentSubject.subject_id}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      "name": name
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return Subjects.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
+  }
+}
+
+Future<Subjects> createSubjects(String subjectName, int userId) async {
+
+  final response = await http.post(
+    Uri.parse('https://teameduc8.herokuapp.com/api/subjects/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode({
+      "name": subjectName,
+      "user_id" : userId,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return Subjects.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create subjects.');
+  }
+}
+//======================
+Future<List<Topic>> fetchTopicMain(int? subjectId) async{
+  final topicResponse = await
+  http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${subjectId}'));
+
+  if (topicResponse.statusCode == 200) {
+    return compute(parseTopic, topicResponse.body);
+  } else {
+    throw Exception('Failed to load Subjects');
+  }
+
+}
+
+List<Topic> parseTopicMain(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
+}
+//======================
 class MainPage extends StatefulWidget{
   final int? text;
 
@@ -112,7 +175,88 @@ class _MainPageState extends State<MainPage> {
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
   Color warna = Colors.purple;
-  bool isChecked = false;
+  //bool isChecked = false;
+
+  showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
+    Widget info = Column(
+      children: [
+        Text("Title", textAlign: TextAlign.left,style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'montserrat')),
+        Text(title, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
+        Text(type, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
+        Text(deadline, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
+        Text (Desc, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
+      ]
+    );
+    // set up the AlertDialog
+    AlertDialog showInfo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Informasi"),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        info,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return showInfo;
+      },
+    );
+  }
+
+  showAlertDialogEdit(BuildContext context, Subjects currentSubject) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintText: 'Subject Name',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Edit'),
+      onPressed: () {
+        editSubjects(customController.text, currentSubject);
+        //Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addsubject = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Edit Subject", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addsubject;
+      },
+    );
+  }
 
   showAlertDialog(BuildContext context) {
     TextEditingController customController = TextEditingController();
@@ -132,8 +276,16 @@ class _MainPageState extends State<MainPage> {
       elevation: 5.0,
       child: Text('Add'),
       onPressed: () {
-        //masukin ke back end
-        Navigator.of(context).pop(customController.text.toString());
+        createSubjects(customController.text, widget.text!);
+        //Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
       },
     );
     // set up the AlertDialog
@@ -229,48 +381,110 @@ class _MainPageState extends State<MainPage> {
 
                   if (snapshot.hasData) {
                     return Container(
-                        padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
-                          child: StaggeredGridView.countBuilder(
-                              itemCount: snapshot.data!.length,
-                              crossAxisCount: 4,
-                              itemBuilder: (BuildContext context, int index) => new Container(
-                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.purple,
-                                  ),
-                                  child: Column(
-                                    children:
-                                    [
-                                      Text(snapshot.data![index].name!,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                          padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
+                            child: StaggeredGridView.countBuilder(
+                                itemCount: snapshot.data!.length,
+                                  crossAxisCount: 4,
+                                  itemBuilder: (BuildContext context, int index) => new Container(
+                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: warna,
                                       ),
-                                      const Divider(
-                                        color: Colors.white,
-                                        height: 25,
-                                        thickness: 3,
-                                        indent: 5,
-                                        endIndent: 5,
+                                      child: SingleChildScrollView(
+                                          child: Column(
+                                            children:
+                                            [
+                                              GestureDetector(
+                                                  onTap: (){
+                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
+                                                        text2: widget.text, sub: snapshot.data![index].name!)));
+                                                  }),
+                                              Row(
+                                                  children :[
+                                                    Expanded(
+                                                      flex: 4,
+                                                        child: Text(snapshot.data![index].name!,
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                                                        ),
+                                                    ),
+
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                        iconSize: 17,
+                                                        color: Colors.white,
+                                                        icon: const Icon(Icons.edit_outlined),
+                                                        tooltip: 'Edit',
+                                                        onPressed: () {
+                                                          showAlertDialogEdit(context, snapshot.data![index]);
+                                                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                        },
+                                                      ),
+                                                    ),
+
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                        iconSize: 17,
+                                                        color: Colors.white,
+                                                        icon: const Icon(Icons
+                                                            .delete_outline_rounded),
+                                                        tooltip: 'Delete',
+                                                        onPressed: () {
+                                                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                        },
+                                                      ),
+                                                    )
+                                                  ]
+                                              ),
+                                              /*FutureBuilder<List<Topic>>(
+                                                  future : fetchTopicMain(),
+                                                  builder: (context, snapshot){
+
+                                                    if (snapshot.hasData) {
+                                                      return Container(
+                                                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                                          child: ListView.builder(
+                                                              itemCount: snapshot.data!.length,
+                                                              scrollDirection: Axis.vertical,
+                                                              itemBuilder: (BuildContext context, int index) {
+                                                                return Container(
+                                                                  child: Text(
+                                                                  snapshot.data![index].topic_name!,
+                                                                  textAlign: TextAlign.left,
+                                                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                ),
+                                                                );
+                                                              }
+                                                          )
+                                                      );
+                                                    }
+                                                    else{
+                                                      return Center(child: CircularProgressIndicator(color: warna));
+                                                    }
+                                                  }
+                                              ),*/
+                                              /*Divider(
+                                                  color: Colors.white,
+                                                  //height: 25,
+                                                  thickness: 3,
+                                                  indent: 5,
+                                                  endIndent: 5,
+                                                ),*/
+                                              ],
+                                          )
                                       ),
-                                      GestureDetector(
-                                          onTap: (){
-                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
-                                                                                                                                text2: widget.text)));
-                                          }),
-                                    ],
-                                  )
                                   ),
-
-                              staggeredTileBuilder: (int index) =>
-                              new StaggeredTile.count(2, index.isEven ? 3 : 2),
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                            )
-                        );
-
-
+                                  staggeredTileBuilder: (int index) =>
+                                  new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                    );
                   }
+
                   else{
                     return Center(child: CircularProgressIndicator(color: warna));
                   }
@@ -283,7 +497,8 @@ class _MainPageState extends State<MainPage> {
                   builder: (context, snapshot){
                     if (snapshot.hasData) {
                       return Container(
-                          child: ListView.builder(
+                        padding: EdgeInsets.fromLTRB(15,10,10,10),
+                        child: ListView.builder(
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext context, int index) {
@@ -292,21 +507,37 @@ class _MainPageState extends State<MainPage> {
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            Checkbox(
-                                              checkColor: Colors.white,
-                                              fillColor: MaterialStateProperty.resolveWith(getColor),
-                                              value: isChecked,
-                                              onChanged: (bool? value) {
-                                                /*if (value!){
-                                                  deleteTodo();
-                                                }*/
-                                                setState((){
-                                                  isChecked = value!;
-                                                });
-                                              },
+                                            Expanded(
+                                              flex: 6,
+                                                child: Text(snapshot.data![index].title!,
+                                                    style: TextStyle(color: Colors.black)),
                                             ),
-                                            Text(snapshot.data![index].title!,
-                                                style: TextStyle(color: Colors.black)),
+                                            Expanded(
+                                              flex: 1,
+                                              child: IconButton(
+                                                icon: const Icon(Icons.check_outlined),
+                                                tooltip: 'Done',
+                                                onPressed: () {
+
+                                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                },
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: IconButton(
+                                                icon: const Icon(Icons.info_outline_rounded ),
+                                                tooltip: 'Info',
+                                                onPressed: () {
+                                                  showAlertDialogTodo(
+                                                      context,
+                                                      snapshot.data![index].title!,
+                                                      snapshot.data![index].type!,
+                                                      snapshot.data![index].deadline!,
+                                                      snapshot.data![index].description!);
+                                                },
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ],
