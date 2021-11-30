@@ -10,6 +10,7 @@ import 'package:flutter_login_ui/pages/topic_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/src/painting/border_radius.dart';
 import 'profile_page.dart';
+import 'topic_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -110,8 +111,51 @@ class _MainPageState extends State<MainPage> {
   // receive data from the FirstScreen as a parameter
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
-
+  Color warna = Colors.purple;
   bool isChecked = false;
+
+  showAlertDialog(BuildContext context) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintText: 'Subject Name',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Add'),
+      onPressed: () {
+        //masukin ke back end
+        Navigator.of(context).pop(customController.text.toString());
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addsubject = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Add Subject", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addsubject;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,9 +164,9 @@ class _MainPageState extends State<MainPage> {
         MaterialState.pressed,
       };
       if (states.any(interactiveStates.contains)) {
-        return Theme.of(context).primaryColor;
+        return warna;
       }
-      return Theme.of(context).primaryColor;
+      return warna;
     }
 
     return MaterialApp(
@@ -133,15 +177,15 @@ class _MainPageState extends State<MainPage> {
           appBar: AppBar(
             toolbarHeight: 80,
             backgroundColor: Colors.white,
-            foregroundColor: Theme.of(context).primaryColor,
+            foregroundColor: warna,
             elevation: 0,
             shadowColor: Colors.white,
             bottom: TabBar(
               indicatorPadding: EdgeInsets.fromLTRB(40, 7, 40, 7),
-              unselectedLabelColor: Theme.of(context).primaryColor,
+              unselectedLabelColor: warna,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: warna,
                   borderRadius: BorderRadius.circular(50)
               ),
               tabs: [
@@ -162,7 +206,7 @@ class _MainPageState extends State<MainPage> {
                   icon: const Icon(Icons.add_circle_outline_outlined),
                   tooltip: 'Add Subject',
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage()));
+                    showAlertDialog(context);
                   }
               ),
               IconButton(
@@ -186,44 +230,49 @@ class _MainPageState extends State<MainPage> {
                   if (snapshot.hasData) {
                     return Container(
                         padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
-                        child: StaggeredGridView.countBuilder(
-                          itemCount: snapshot.data!.length,
-                          crossAxisCount: 4,
-                          itemBuilder: (BuildContext context, int index) => new Container(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.purple,
-                              ),
-                              child: Column(
-                                children:
-                                [
-                                  Text(snapshot.data![index].name!,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                          child: StaggeredGridView.countBuilder(
+                              itemCount: snapshot.data!.length,
+                              crossAxisCount: 4,
+                              itemBuilder: (BuildContext context, int index) => new Container(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.purple,
                                   ),
-                                  const Divider(
-                                    color: Colors.white,
-                                    height: 25,
-                                    thickness: 3,
-                                    indent: 5,
-                                    endIndent: 5,
+                                  child: Column(
+                                    children:
+                                    [
+                                      Text(snapshot.data![index].name!,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                                      ),
+                                      const Divider(
+                                        color: Colors.white,
+                                        height: 25,
+                                        thickness: 3,
+                                        indent: 5,
+                                        endIndent: 5,
+                                      ),
+                                      GestureDetector(
+                                          onTap: (){
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
+                                                                                                                                text2: widget.text)));
+                                          }),
+                                    ],
+                                  )
                                   ),
-                                ],
-                              )
-                              ),
 
-                          staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.count(2, index.isEven ? 3 : 2),
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                        )
+                              staggeredTileBuilder: (int index) =>
+                              new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                            )
+                        );
 
 
-                    );
                   }
                   else{
-                    return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+                    return Center(child: CircularProgressIndicator(color: warna));
                   }
                 }
               )
@@ -328,7 +377,7 @@ class _MainPageState extends State<MainPage> {
                       );
                     }
                     else{
-                      return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+                      return Center(child: CircularProgressIndicator(color: warna));
                     }
                   }
               )

@@ -15,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
-
+  Color warna = Colors.purple;
   _SplashScreenState(){
 
     new Timer(const Duration(milliseconds: 2000), (){
