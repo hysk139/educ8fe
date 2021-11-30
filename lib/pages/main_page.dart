@@ -83,7 +83,7 @@ class _MainPageState extends State<MainPage> {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Submit'),
+      child: Text('Add'),
       onPressed: () {
         //masukin ke back end
         Navigator.of(context).pop(customController.text.toString());
@@ -94,7 +94,7 @@ class _MainPageState extends State<MainPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      title: Text("Edit Topic", textAlign: TextAlign.center),
+      title: Text("Add Subject", textAlign: TextAlign.center),
       titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
       actions: [
         textField,
