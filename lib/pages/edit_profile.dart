@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/users.dart';
 import 'package:flutter_login_ui/pages/main_page.dart';
 import 'package:http/http.dart' as http;
@@ -87,8 +88,6 @@ class EditProfilePage extends  StatefulWidget{
 }
 
 class _EditProfilePage extends State<EditProfilePage>{
-  Color warna = Colors.purple;
-
   double _headerHeight = 10;
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;

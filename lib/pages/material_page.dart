@@ -1,45 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
+import 'add_todo_page.dart';
 import 'topic_page.dart';
 
 class materialPage extends StatelessWidget {
   const materialPage({Key? key}) : super(key: key);
 
   static const IconData arrow_back_ios_rounded = IconData(0xf571, fontFamily: 'MaterialIcons', matchTextDirection: true);
-  createAlertDialog(BuildContext context){
 
+  showAlertDialogAddVideo(BuildContext context) {
     TextEditingController customController = TextEditingController();
 
-    return showDialog(context: context, builder: (context){
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        title: Text("Insert Video Link", textAlign: TextAlign.center),
-        titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+        hintText: 'Video Link',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Insert'),
+      onPressed: () {
 
-        content: TextField(
-          style: TextStyle(fontSize: 14.0),
-          controller: customController,
-          decoration: InputDecoration(
-            //border: InputBorder.none,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
-            ),
-            hintText: 'Subject Name',
-          ),
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addvideo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Insert Video Link", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addvideo;
+      },
+    );
+  }
+
+  showAlertDialogAddNote(BuildContext context) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        actions: <Widget>[
-          MaterialButton(
-            elevation: 5.0,
-            child: Text('Submit'),
-            onPressed: (){
-              //masukin ke back end
-              Navigator.of(context).pop(customController.text.toString());
-            },
-          )
-        ],
-      );
-    });
+        hintText: 'Enter your notes',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Edit'),
+      onPressed: () {
+
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addnote = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Edit Notes", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addnote;
+      },
+    );
   }
 
   @override
@@ -51,7 +101,7 @@ class materialPage extends StatelessWidget {
         toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
-        foregroundColor: Theme.of(context).primaryColor,
+        foregroundColor: warna,
         leading: IconButton(
           onPressed: () {
             //tambahin back kemana
@@ -76,40 +126,114 @@ class materialPage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Note',
-                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
-                ),
-              ),
+            Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Note',
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      alignment: Alignment.bottomCenter,
+                      icon: const Icon(
+                          Icons.edit_outlined, size: 20,),
+                      tooltip: 'Edit',
+                      onPressed: () {
+                        showAlertDialogAddNote(context);
+                        },
+                    ),
+                  ),
+                ]
             ),
             Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
               height: 2.0,
               width: 400.0,
-              color: Theme.of(context).primaryColor,
+              color: warna,
             ),
-            TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter Description',
-                hintStyle: TextStyle(fontSize: 16)
+            Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(fontSize: 16)
               ),
+            Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Video',
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      alignment: Alignment.bottomCenter,
+                      icon: const Icon(
+                        Icons.edit_outlined, size: 20,),
+                      tooltip: 'Edit',
+                      onPressed: () {
+                        showAlertDialogAddVideo(context);
+                        },
+                    ),
+                  ),
+                ]
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+              height: 2.0,
+              width: 400.0,
+              color: warna,
+            ),
+            Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'To Do',
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      alignment: Alignment.bottomCenter,
+                      icon: const Icon(
+                        Icons.add_circle_outline_outlined, size: 20,),
+                      tooltip: 'Edit',
+                      onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddTodoPage()));
+                      },
+                    ),
+                  ),
+                ]
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+              height: 2.0,
+              width: 400.0,
+              color: warna,
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: (){
-          createAlertDialog(context);
-        },
-        child: Icon(
-          Icons.add,
-          size: 30,
-          color: Colors.white,
         ),
       ),
     );
