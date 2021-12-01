@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/users.dart';
+import 'package:flutter_login_ui/helpers/color_preference.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 import 'main_page.dart';
 import 'edit_profile.dart';
@@ -41,7 +44,8 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage>{
   double _headerHeight = 10;
-  Color warna = Colors.purple;
+  //Color warna = ColorPreference.getEducColor();
+
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -191,6 +195,84 @@ class _ProfilePageState extends State<ProfilePage>{
                                                 //
                                             ),
                                           ),
+                                          SizedBox(height: 10,),
+                                          Card(
+                                            shape: RoundedRectangleBorder(
+                                                side: BorderSide(color: warna, width: 1),
+                                                borderRadius: BorderRadius.circular(10)),
+                                            child: Column(
+                                              children: [
+                                                ListTile(
+                                                  title: Text("Theme"),
+                                                  subtitle: Text("Change your preference color!"),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: IconButton(
+                                                            onPressed: (){
+                                                              ColorPreference.setEducColor(1);
+                                                              warna = Colors.indigo;
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(Icons.circle, color: Colors.indigo, size: 35))
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                          onPressed: (){
+                                                            ColorPreference.setEducColor(2);
+                                                            warna = Colors.green;
+                                                            setState(() {});
+                                                          },
+                                                          icon: Icon(Icons.circle, color: Colors.green, size: 35)),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                          onPressed: (){
+                                                            ColorPreference.setEducColor(3);
+                                                            warna = Colors.purple;
+                                                            setState(() {});
+                                                          },
+                                                          icon: Icon(Icons.circle, color: Colors.purple, size: 35)),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                          onPressed: (){
+                                                            ColorPreference.setEducColor(4);
+                                                            warna = Colors.pink;
+                                                            setState(() {});
+                                                          },
+                                                          icon: Icon(Icons.circle, color: Colors.pink, size: 35)),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                          onPressed: (){
+                                                            ColorPreference.setEducColor(5);
+                                                            warna = Colors.red;
+                                                            setState(() {});
+                                                          },
+                                                          icon: Icon(Icons.circle, color: Colors.red, size: 35)),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: IconButton(
+                                                          onPressed: (){
+                                                            ColorPreference.setEducColor(6);
+                                                            warna = Colors.yellow;
+                                                            setState(() {});
+                                                          },
+                                                          icon: Icon(Icons.circle, color: Colors.yellow, size: 35)),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            )
+                                          ),
                                         ],
                                       ),
                                     )
@@ -276,5 +358,4 @@ class _ProfilePageState extends State<ProfilePage>{
       ),
     );*/
   }
-
 }

@@ -2,26 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'helpers/color_preference.dart';
+import 'helpers/globals.dart';
 import 'pages/splash_screen.dart';
 
 void main() {
-  runApp(LoginUiApp());
+  runApp(App());
 }
 
-class LoginUiApp extends StatelessWidget {
-  Color warna = Colors.purple;
+class App extends StatelessWidget {
+
+  static getEducColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //if (prefs == null) return 0;
+    int value = prefs.getInt('color') ?? 0;
+    ColorPreference.getWarna(value);
+  }
 
   @override
   Widget build(BuildContext context) {
+    getEducColor();
     return MaterialApp(
-      title: 'Flutter Login UI',
+      title: 'Educ 8',
       theme: ThemeData(
-        primaryColor: warna,
+        //primaryColor: warna,
         fontFamily: 'montserrat',
         scaffoldBackgroundColor: Colors.grey.shade100,
         primarySwatch: Colors.grey,
       ),
-      home: SplashScreen(title: 'Flutter Login UI'),
+      home: SplashScreen(title: 'Educ 8'),
     );
   }
 }/*

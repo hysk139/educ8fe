@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/users.dart';
 import 'package:http/http.dart' as http;
 import 'registration_page.dart';
@@ -49,7 +50,7 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPageState extends State<LoginPage>{
-  Color warna = Colors.purple;
+
   double _headerHeight = 100;
   final TextEditingController _controllerUser = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();

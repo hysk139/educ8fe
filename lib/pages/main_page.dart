@@ -3,12 +3,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/helpers/Utils.dart';
+import 'package:flutter_login_ui/helpers/color_preference.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/subjects.dart';
 import 'package:flutter_login_ui/models/todo.dart';
 import 'package:flutter_login_ui/models/topic.dart';
 import 'package:flutter_login_ui/pages/topic_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/src/painting/border_radius.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'profile_page.dart';
 import 'topic_page.dart';
 import 'package:http/http.dart' as http;
@@ -161,6 +164,7 @@ List<Topic> parseTopicMain(String responseBody) {
   return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
 }
 //======================
+
 class MainPage extends StatefulWidget{
   final int? text;
 
@@ -174,7 +178,7 @@ class _MainPageState extends State<MainPage> {
   // receive data from the FirstScreen as a parameter
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
-  Color warna = Colors.purple;
+
   showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
     Widget info = Column(
       children: [

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ThemeHelper{
@@ -28,7 +29,7 @@ class ThemeHelper{
   }
 
   BoxDecoration buttonBoxDecoration(BuildContext context, [String color1 = "", String color2 = ""]) {
-    Color c1 = Theme.of(context).primaryColor;
+    Color c1 = warna;
     Color c2 = Theme.of(context).accentColor;
     if (color1.isEmpty == false) {
       c1 = HexColor(color1);
@@ -63,7 +64,7 @@ class ThemeHelper{
         ),
       ),
       minimumSize: MaterialStateProperty.all(Size(double.infinity, 50)),
-      backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+      backgroundColor: MaterialStateProperty.all(warna),
       shadowColor: MaterialStateProperty.all(Colors.transparent),
     );
   }
