@@ -178,6 +178,7 @@ class _MainPageState extends State<MainPage> {
   // receive data from the FirstScreen as a parameter
   //MainPage({Key? key, @required this.text}) : super(key: key);
   //List<Subjects> subjects = Utils.getMockedSubjects();
+  int tab = 0;
 
   showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
     Widget info = Column(
@@ -239,7 +240,7 @@ class _MainPageState extends State<MainPage> {
       },
     );
     // set up the AlertDialog
-    AlertDialog addsubject = AlertDialog(
+    AlertDialog editsubject = AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -254,12 +255,12 @@ class _MainPageState extends State<MainPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return addsubject;
+        return editsubject;
       },
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  showAlertDialogAddSubject(BuildContext context) {
     TextEditingController customController = TextEditingController();
 
     Widget textField = TextField(
@@ -309,6 +310,56 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  showAlertDialogAddTodo(BuildContext context) {
+    TextEditingController customController = TextEditingController();
+
+    Widget textField = TextField(
+      style: TextStyle(fontSize: 14.0),
+      controller: customController,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintText: 'Todo Title',
+      ),
+    );
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Add'),
+      onPressed: () {
+        createSubjects(customController.text, widget.text!);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog addtodo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Add Todo", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        textField,
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return addtodo;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -333,6 +384,15 @@ class _MainPageState extends State<MainPage> {
             elevation: 0,
             shadowColor: Colors.white,
             bottom: TabBar(
+              onTap: (index) {
+                if(index == 0){
+                  tab = 0;
+                }
+                else{
+                  tab = 1;
+                }
+                //your currently selected index
+              },
               indicatorPadding: EdgeInsets.fromLTRB(40, 7, 40, 7),
               unselectedLabelColor: warna,
               indicatorSize: TabBarIndicatorSize.tab,
@@ -358,7 +418,12 @@ class _MainPageState extends State<MainPage> {
                   icon: const Icon(Icons.add_circle_outline_outlined),
                   tooltip: 'Add Subject',
                   onPressed: () {
-                    showAlertDialog(context);
+                    if (tab == 0){
+                      showAlertDialogAddSubject(context);
+                    }
+                    else{
+                      showAlertDialogAddTodo(context);
+                    }
                   }
               ),
               IconButton(
@@ -374,7 +439,8 @@ class _MainPageState extends State<MainPage> {
 
           body: TabBarView(
             children:  [
-              Expanded(child:
+              Expanded(
+                  child:
               FutureBuilder<List<Subjects>>(
                 future : fetchSubjects(widget.text),
                 builder: (context, snapshot){
