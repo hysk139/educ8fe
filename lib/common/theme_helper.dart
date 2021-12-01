@@ -28,6 +28,14 @@ class ThemeHelper{
     ]);
   }
 
+  BoxDecoration dropDecoration(){
+    return BoxDecoration(
+      border: Border.all(width: 1),
+      borderRadius: BorderRadius.circular(10),
+      color: Colors.grey.shade300,
+    );
+  }
+
   BoxDecoration buttonBoxDecoration(BuildContext context, [String color1 = "", String color2 = ""]) {
     Color c1 = warna;
     Color c2 = Theme.of(context).accentColor;
