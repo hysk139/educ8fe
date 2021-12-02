@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
-//import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+//import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'add_todo_page.dart';
 import 'topic_page.dart';
 import 'package:flutter/material.dart';
@@ -104,44 +104,13 @@ class _materialPageState extends State<materialPage>{
     );
   }
 
-  late YoutubePlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: 'tcodrIK2P_I',
-      params: const YoutubePlayerParams(
-        playlist: [
-          'nPt8bK2gbaU',
-          'K18cpp_-gP8',
-          'iLnmTe5Q2Qw',
-          '_WoCV4c6XOE',
-          'KmzdUe0RSJo',
-          '6jZDSSZZxjQ',
-          'p2lYr3vM_1w',
-          '7QUtEmBT_-w',
-          '34_PXCzGw1M',
-        ],
-        startAt: const Duration(minutes: 1, seconds: 36),
-        showControls: true,
-        showFullscreenButton: true,
-        desktopMode: false,
-        privacyEnhanced: true,
-        useHybridComposition: true,
-      ),
-    );
-    _controller.onEnterFullscreen = () {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-      log('Entered Fullscreen');
-    };
-    _controller.onExitFullscreen = () {
-      log('Exited Fullscreen');
-    };
-  }
+  YoutubePlayerController _controller = YoutubePlayerController(
+      initialVideoId: 'iAgg5C-BN1s',
+    flags: YoutubePlayerFlags(
+      autoPlay: false,
+      mute: false,
+    )
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -249,36 +218,10 @@ class _materialPageState extends State<materialPage>{
               width: 400.0,
               color: warna,
             ),
-            YoutubeValueBuilder(
-              controller: _controller,
-              builder: (context, value) {
-                return AnimatedCrossFade(
-                  firstChild: const SizedBox.shrink(),
-                  secondChild: Material(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            YoutubePlayerController.getThumbnail(
-                              videoId:
-                              _controller.params.playlist.first,
-                              quality: ThumbnailQuality.medium,
-                            ),
-                          ),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                  crossFadeState: value.isReady
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(milliseconds: 300),
-                );
-              },
+            YoutubePlayer(
+                controller: _controller,
+              showVideoProgressIndicator: true,
+              progressIndicatorColor: warna,
             ),
             Row(
                 children: [
