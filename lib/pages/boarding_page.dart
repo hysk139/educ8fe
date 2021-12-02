@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'login_page.dart';
 import 'material_page.dart';
 import 'topic_page.dart';
@@ -79,7 +80,7 @@ class _boardingPageState extends State<boardingPage> {
             child: Text(
               "Skip",
               style: TextStyle(
-                color: currentIndex % 2 == 0 ? kwhite : kblue,
+                color: currentIndex % 2 == 0 ? kwhite : warna,
               ),
             ),
           )
@@ -135,7 +136,7 @@ class _boardingPageState extends State<boardingPage> {
                       fontSize: 27.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins',
-                      color: index % 2 == 0 ? kwhite : kblue,
+                      color: index % 2 == 0 ? kwhite : warna,
                     ),
                   ),
                   Text(
@@ -144,7 +145,7 @@ class _boardingPageState extends State<boardingPage> {
                     style: TextStyle(
                       fontSize: 18.0,
                       fontFamily: 'Montserrat',
-                      color: index % 2 == 0 ? kwhite : kblue,
+                      color: index % 2 == 0 ? kwhite : warna,
                     ),
                   ),
                   InkWell(
@@ -165,21 +166,21 @@ class _boardingPageState extends State<boardingPage> {
                       padding:
                       EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
                       decoration: BoxDecoration(
-                          color: index % 2 == 0 ? kwhite : kblue,
+                          color: index % 2 == 0 ? kwhite : warna,
                           borderRadius: BorderRadius.circular(15.0)),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         Text(
                           "Next",
                           style: TextStyle(
                               fontSize: 16.0,
-                              color: index % 2 == 0 ? kblue : kwhite),
+                              color: index % 2 == 0 ? warna : kwhite),
                         ),
                         SizedBox(
                           width: 15.0,
                         ),
                         Icon(
                           Icons.arrow_forward_sharp,
-                          color: index % 2 == 0 ? kblue : kwhite,
+                          color: index % 2 == 0 ? warna : kwhite,
                         )
                       ]),
                     ),

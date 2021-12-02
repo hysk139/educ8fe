@@ -106,7 +106,7 @@ class _EditProfilePage extends State<EditProfilePage>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF252834),
         appBar: AppBar(
         elevation: 0,
           leading: IconButton(
@@ -116,10 +116,10 @@ class _EditProfilePage extends State<EditProfilePage>{
             },
             icon: Icon(Icons.arrow_back_ios_rounded),
           ),
-        iconTheme: IconThemeData(color: warna),
+        iconTheme: IconThemeData(color: Colors.white),
           flexibleSpace:Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xFF252834),
             ),
           ),
         ),
@@ -145,7 +145,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                 child:
                                 Text(
                                   'Edit Profile',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 20, color: Colors.white),
                                 ),
                               ),
                               SizedBox(height: 10,),
@@ -177,7 +177,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                   child:
                                                   Text(
                                                     'Name',
-                                                    style: TextStyle(fontSize: 15),
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
                                                   ),
                                                 ),
                                                 Container(
@@ -201,7 +201,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                   child:
                                                   Text(
                                                     'E-Mail',
-                                                    style: TextStyle(fontSize: 15),
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
                                                   ),
                                                 ),
                                                 Container(
@@ -226,7 +226,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                   child:
                                                   Text(
                                                     'Phone Number',
-                                                    style: TextStyle(fontSize: 15),
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
                                                   ),
                                                 ),
                                                 Container(
@@ -251,7 +251,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                   child:
                                                   Text(
                                                     'Password',
-                                                    style: TextStyle(fontSize: 15),
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
                                                   ),
                                                 ),
                                                 Container(
@@ -277,7 +277,7 @@ class _EditProfilePage extends State<EditProfilePage>{
                                                   child:
                                                   Text(
                                                     'Confirm Password',
-                                                    style: TextStyle(fontSize: 15),
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
                                                   ),
                                                 ),
                                                 Container(
@@ -347,7 +347,7 @@ class _EditProfilePage extends State<EditProfilePage>{
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(color: warna));
+              return Center(child: CircularProgressIndicator(color: Colors.white));
             }
           }
       )

@@ -35,13 +35,13 @@ class _AddTodoPage extends State<AddTodoPage>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF252834),
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
-        foregroundColor: warna,
+        backgroundColor: Color(0xFF252834),
+        foregroundColor: Colors.white,
         elevation: 0,
-        shadowColor: Colors.white,
+        shadowColor: Color(0xFF252834),
         title: Text(
             "Add To Do",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)
@@ -72,7 +72,7 @@ class _AddTodoPage extends State<AddTodoPage>{
                         child:
                         Text(
                           'Title',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),
                       Container(
@@ -96,7 +96,7 @@ class _AddTodoPage extends State<AddTodoPage>{
                         child:
                         Text(
                           'Description',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),
                       Container(
@@ -120,7 +120,7 @@ class _AddTodoPage extends State<AddTodoPage>{
                         child:
                         Text(
                           'Deadline',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),
                       Container(
@@ -144,7 +144,7 @@ class _AddTodoPage extends State<AddTodoPage>{
                         child:
                         Text(
                           'Type',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),
                       Container(

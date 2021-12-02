@@ -226,7 +226,7 @@ class _MainPageState extends State<MainPage> {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Edit'),
+      child: Text('Edit', style: TextStyle(color: warna)),
       onPressed: () {
         editSubjects(customController.text, currentSubject);
         Navigator.of(context)
@@ -276,7 +276,7 @@ class _MainPageState extends State<MainPage> {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Add'),
+      child: Text('Add', style: TextStyle(color: warna)),
       onPressed: () {
         createSubjects(customController.text, widget.text!);
         Navigator.of(context)
@@ -326,16 +326,16 @@ class _MainPageState extends State<MainPage> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFF252834),
           appBar: AppBar(
             toolbarHeight: 80,
-            backgroundColor: Colors.white,
-            foregroundColor: warna,
+            backgroundColor: Color(0xFF252834),
+            foregroundColor: Colors.white,
             elevation: 0,
-            shadowColor: Colors.white,
+            shadowColor: Color(0xFF252834),
             bottom: TabBar(
               indicatorPadding: EdgeInsets.fromLTRB(40, 7, 40, 7),
-              unselectedLabelColor: warna,
+              unselectedLabelColor: Colors.white,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
                   color: warna,
@@ -352,7 +352,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-            title: const Text('EDUC 8', style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal)),
+            title: const Text('EDUC 8', style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.white)),
 
             actions: <Widget>[
               IconButton(
@@ -391,7 +391,7 @@ class _MainPageState extends State<MainPage> {
                                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: warna,
+                                        color: Color(0xFF383751),
                                       ),
                                       child: SingleChildScrollView(
                                           child: Column(
@@ -488,7 +488,7 @@ class _MainPageState extends State<MainPage> {
                   }
 
                   else{
-                    return Center(child: CircularProgressIndicator(color: warna));
+                    return Center(child: CircularProgressIndicator(color: Colors.white));
                   }
                 }
               )
@@ -610,7 +610,7 @@ class _MainPageState extends State<MainPage> {
                       );
                     }
                     else{
-                      return Center(child: CircularProgressIndicator(color: warna));
+                      return Center(child: CircularProgressIndicator(color: Colors.white));
                     }
                   }
               )

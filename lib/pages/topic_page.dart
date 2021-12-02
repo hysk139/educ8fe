@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/painting/border_radius.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/topic.dart';
 import 'main_page.dart';
 import 'material_page.dart';
@@ -41,7 +42,6 @@ class TopicPage extends  StatefulWidget{
 
 class _TopicPage extends State<TopicPage> {
   double _headerHeight = 10;
-  Color warna = Colors.purple;
 
   showAlertDialogAdd(BuildContext context) {
     TextEditingController customController = TextEditingController();
@@ -59,7 +59,7 @@ class _TopicPage extends State<TopicPage> {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Add'),
+      child: Text('Add', style: TextStyle(color: warna)),
       onPressed: () {
 
       },
@@ -101,7 +101,7 @@ class _TopicPage extends State<TopicPage> {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Edit'),
+      child: Text('Edit', style: TextStyle(color: warna)),
       onPressed: () {
 
       },
@@ -131,13 +131,13 @@ class _TopicPage extends State<TopicPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFF252834),
           appBar: AppBar(
             toolbarHeight: 80,
-            backgroundColor: Colors.white,
-            foregroundColor: warna,
+            backgroundColor: Color(0xFF252834),
+            foregroundColor: Colors.white,
             elevation: 0,
-            shadowColor: Colors.white,
+            shadowColor: Color(0xFF252834),
             title: Text(
                 widget.sub!,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)
@@ -236,7 +236,7 @@ class _TopicPage extends State<TopicPage> {
                         );
                       }
                       else{
-                        return Center(child: CircularProgressIndicator(color: warna));
+                        return Center(child: CircularProgressIndicator(color: Colors.white));
                       }
                     }
                 ),

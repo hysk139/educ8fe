@@ -60,13 +60,19 @@ class _LoginPageState extends State<LoginPage>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF252834),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: _headerHeight,
+              child:
+              Image.asset(
+                "assets/images/Group-6.png",
+                scale: 0.8,
+                fit: BoxFit.fitHeight,
+              ),
             ),
+
             SafeArea(
               child: Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -74,15 +80,15 @@ class _LoginPageState extends State<LoginPage>{
                   child: Column(
                     children: [
                       Container(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.center,
                         margin: EdgeInsets.fromLTRB(3,0,5,30),
                         child:
                         Text(
                           'LOGIN',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Montserrat' ),
                         ),
                       ),
-                      SizedBox(height: 30.0),
+                      SizedBox(height: 20.0),
                       Form(
                           key: _formKey,
                           child: Column(
@@ -93,7 +99,7 @@ class _LoginPageState extends State<LoginPage>{
                                 child:
                                 Text(
                                   'Email',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),
                                 ),
                               ),
                               Container(
@@ -108,16 +114,16 @@ class _LoginPageState extends State<LoginPage>{
                                     return null;
                                   },
                                 ),
-                                decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                // decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               ),
-                              SizedBox(height: 30.0),
+                              SizedBox(height: 15.0),
                               Container(
                                 alignment: Alignment.topLeft,
                                 margin: EdgeInsets.fromLTRB(3,0,5,10),
                                 child:
                                 Text(
                                   'Password',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),
                                 ),
                               ),
                               Container(
@@ -132,42 +138,42 @@ class _LoginPageState extends State<LoginPage>{
                                     return null;
                                   },
                                 ),
-                                decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                // decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               ),
                               SizedBox(height: 30.0),
                               Container(
-                                decoration: ThemeHelper().buttonBoxDecoration(context),
-                                child: ElevatedButton(
-                                  style: ThemeHelper().buttonStyle(context),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                    child: Text(
-                                      "login".toUpperCase(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.white,
+                                  decoration: ThemeHelper().buttonBoxDecoration(context),
+                                  child: ElevatedButton(
+                                      style: ThemeHelper().buttonStyle(context),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                        child: Text(
+                                          "login".toUpperCase(),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    Future<bool> match = authenticate(
-                                        _controllerUser.text,
-                                        _controllerPassword.text);
-                                    {
-                                      if (_formKey.currentState!.validate() &&
-                                          await match) {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MainPage(text: userId,)
-                                            ),
-                                                (Route<dynamic> route) => false
-                                        );
-                                      };
-                                    };
-                                  }
+                                      onPressed: () async {
+                                        Future<bool> match = authenticate(
+                                            _controllerUser.text,
+                                            _controllerPassword.text);
+                                        {
+                                          if (_formKey.currentState!.validate() &&
+                                              await match) {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MainPage(text: userId,)
+                                                ),
+                                                    (Route<dynamic> route) => false
+                                            );
+                                          };
+                                        };
+                                      }
                                   )
                               ),
 
@@ -178,7 +184,8 @@ class _LoginPageState extends State<LoginPage>{
                                 child: Text.rich(
                                     TextSpan(
                                         children: [
-                                          TextSpan(text: "Don\'t have an account yet? \n"),
+                                          TextSpan(text: "Don\'t have an account yet? \n", style: TextStyle(color: Color(0xFFFFFFFF))),
+
                                           TextSpan(
                                             text: 'Register',
                                             recognizer: TapGestureRecognizer()

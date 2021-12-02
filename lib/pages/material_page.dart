@@ -24,7 +24,7 @@ class materialPage extends StatelessWidget {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Insert'),
+      child: Text('Insert', style: TextStyle(color: warna)),
       onPressed: () {
 
       },
@@ -66,7 +66,7 @@ class materialPage extends StatelessWidget {
     );
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Edit'),
+      child: Text('Edit', style: TextStyle(color: warna),),
       onPressed: () {
 
       },
@@ -96,12 +96,12 @@ class materialPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF252834),
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF252834),
         elevation: 0,
-        foregroundColor: warna,
+        foregroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             //tambahin back kemana
@@ -122,7 +122,7 @@ class materialPage extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Text(
                   'Software Architecture',
-                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20.0),
                 ),
               ),
             ),
@@ -136,7 +136,7 @@ class materialPage extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Note',
-                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
                         ),
                       ),
                     ),
@@ -146,7 +146,7 @@ class materialPage extends StatelessWidget {
                     child: IconButton(
                       alignment: Alignment.bottomCenter,
                       icon: const Icon(
-                          Icons.edit_outlined, size: 20,),
+                          Icons.edit_outlined, size: 20,color: Colors.white),
                       tooltip: 'Edit',
                       onPressed: () {
                         showAlertDialogAddNote(context);
@@ -161,7 +161,7 @@ class materialPage extends StatelessWidget {
               width: 400.0,
               color: warna,
             ),
-            Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(fontSize: 16)
+            Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(color: Colors.white, fontSize: 16)
               ),
             Row(
                 children: [
@@ -173,7 +173,7 @@ class materialPage extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Video',
-                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
                         ),
                       ),
                     ),
@@ -183,7 +183,7 @@ class materialPage extends StatelessWidget {
                     child: IconButton(
                       alignment: Alignment.bottomCenter,
                       icon: const Icon(
-                        Icons.edit_outlined, size: 20,),
+                        Icons.edit_outlined, size: 20,color: Colors.white),
                       tooltip: 'Edit',
                       onPressed: () {
                         showAlertDialogAddVideo(context);
@@ -208,7 +208,7 @@ class materialPage extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'To Do',
-                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
                         ),
                       ),
                     ),
@@ -218,7 +218,7 @@ class materialPage extends StatelessWidget {
                     child: IconButton(
                       alignment: Alignment.bottomCenter,
                       icon: const Icon(
-                        Icons.add_circle_outline_outlined, size: 20,),
+                        Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
                       tooltip: 'Edit',
                       onPressed: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddTodoPage()));

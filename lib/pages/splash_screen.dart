@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
-  Color warna = Colors.purple;
+
   _SplashScreenState(){
 
     new Timer(const Duration(milliseconds: 2000), (){
@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Container(
       decoration: new BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF252834),
       ),
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0,
@@ -54,13 +54,13 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Text(
                 'ED\nUC\n∞',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 60, color: Colors.white, fontWeight: FontWeight.normal),
               ), //put your logo here
             ),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Colors.white,
-              border: Border.all(width: 2, color: Colors.black),
+              color: Color(0xFF252834),
+              border: Border.all(width: 2, color: Colors.white),
             ),
           ),
         ),

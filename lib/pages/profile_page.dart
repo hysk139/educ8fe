@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF252834),
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -94,10 +94,10 @@ class _ProfilePageState extends State<ProfilePage>{
           },
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
-        iconTheme: IconThemeData(color: warna),
+        iconTheme: IconThemeData(color: Colors.white),
         flexibleSpace:Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xFF252834),
           ),
         ),
 
@@ -140,9 +140,9 @@ class _ProfilePageState extends State<ProfilePage>{
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(width: 2, color: warna),
-                                        color: Colors.white,
+                                        color: Color(0xFF383751),
                                       ),
-                                      child: Icon(Icons.person, size: 80, color: warna),
+                                      child: Icon(Icons.person, size: 80, color: Colors.white),
                                     ),
                                     SizedBox(height: 20, width: 20,),
                                     Container(
@@ -163,8 +163,9 @@ class _ProfilePageState extends State<ProfilePage>{
                                                 side: BorderSide(color: warna, width: 1),
                                                 borderRadius: BorderRadius.circular(10)),
                                             child: ListTile(
-                                              title: Text("Email"),
-                                              subtitle: Text(snapshot.data![index].email!),
+                                              title: Text("Email", style: TextStyle(color: Colors.white)),
+                                              subtitle: Text(snapshot.data![index].email!, style: TextStyle(color: Colors.white)),
+                                              tileColor: Color(0xFF383751),
                                             ),
                                           ),
                                           SizedBox(height: 10,),
@@ -173,8 +174,9 @@ class _ProfilePageState extends State<ProfilePage>{
                                                 side: BorderSide(color: warna, width: 1),
                                                 borderRadius: BorderRadius.circular(10)),
                                             child: ListTile(
-                                              title: Text("Phone"),
-                                              subtitle: Text(snapshot.data![index].phone_number!),
+                                              title: Text("Phone", style: TextStyle(color: Colors.white)),
+                                              subtitle: Text(snapshot.data![index].phone_number!, style: TextStyle(color: Colors.white)),
+                                              tileColor: Color(0xFF383751),
                                             ),
                                           ),
                                           SizedBox(height: 10.0),
@@ -203,73 +205,77 @@ class _ProfilePageState extends State<ProfilePage>{
                                             child: Column(
                                               children: [
                                                 ListTile(
-                                                  title: Text("Theme"),
-                                                  subtitle: Text("Change your preference color!"),
+                                                  title: Text("Theme", style: TextStyle(color: Colors.white)),
+                                                  subtitle: Text("Change your preference color!", style: TextStyle(color: Colors.white)),
+                                                  tileColor: Color(0xFF383751),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
+                                                Container(
+                                                  color: Color(0xFF383751),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(1);
-                                                              warna = Colors.indigo;
+                                                              ColorPreference.setEducColor(5);
+                                                              warna = Colors.red;
                                                               setState(() {});
                                                             },
-                                                            icon: Icon(Icons.circle, color: Colors.indigo, size: 35))
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: (){
-                                                            ColorPreference.setEducColor(2);
-                                                            warna = Colors.green;
-                                                            setState(() {});
-                                                          },
-                                                          icon: Icon(Icons.circle, color: Colors.green, size: 35)),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: (){
-                                                            ColorPreference.setEducColor(3);
-                                                            warna = Colors.purple;
-                                                            setState(() {});
-                                                          },
-                                                          icon: Icon(Icons.circle, color: Colors.purple, size: 35)),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: (){
-                                                            ColorPreference.setEducColor(4);
-                                                            warna = Colors.pink;
-                                                            setState(() {});
-                                                          },
-                                                          icon: Icon(Icons.circle, color: Colors.pink, size: 35)),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: (){
-                                                            ColorPreference.setEducColor(5);
-                                                            warna = Colors.red;
-                                                            setState(() {});
-                                                          },
-                                                          icon: Icon(Icons.circle, color: Colors.red, size: 35)),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: (){
-                                                            ColorPreference.setEducColor(6);
-                                                            warna = Colors.yellow;
-                                                            setState(() {});
-                                                          },
-                                                          icon: Icon(Icons.circle, color: Colors.yellow, size: 35)),
-                                                    )
-                                                  ],
-                                                )
+                                                            icon: Icon(Icons.circle, color: Colors.red, size: 35)),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: IconButton(
+                                                            onPressed: (){
+                                                              ColorPreference.setEducColor(4);
+                                                              warna = Colors.pink;
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(Icons.circle, color: Colors.pink, size: 35)),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: IconButton(
+                                                            onPressed: (){
+                                                              ColorPreference.setEducColor(2);
+                                                              warna = Colors.green;
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(Icons.circle, color: Colors.green, size: 35)),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: IconButton(
+                                                            onPressed: (){
+                                                              ColorPreference.setEducColor(6);
+                                                              warna = Color(0xFF246BFD);
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(Icons.circle, color: Color(0xFF246BFD), size: 35)),
+                                                      ),
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: IconButton(
+                                                              onPressed: (){
+                                                                ColorPreference.setEducColor(1);
+                                                                warna = Color(0xFFCA85EB);
+                                                                setState(() {});
+                                                              },
+                                                              icon: Icon(Icons.circle, color: Color(0xFFCA85EB), size: 35))
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: IconButton(
+                                                            onPressed: (){
+                                                              ColorPreference.setEducColor(3);
+                                                              warna = Colors.purple;
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(Icons.circle, color: Colors.purple, size: 35)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             )
                                           ),
@@ -288,7 +294,7 @@ class _ProfilePageState extends State<ProfilePage>{
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(color: warna));
+              return Center(child: CircularProgressIndicator(color: Colors.white));
             }
           }
       )

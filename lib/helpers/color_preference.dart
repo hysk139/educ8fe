@@ -49,11 +49,11 @@ class ColorPreference{
 
   static getWarna(int value){
     if (value == 0){
-      warna = Colors.indigo;
+      warna = Color(0xFF246BFD);
       //return Colors.indigo;
     }
     if (value == 1){
-      warna = Colors.indigo;
+      warna = Color(0xFFCA85EB);
       //return Colors.indigo;
     }
     if(value == 2){
@@ -73,7 +73,7 @@ class ColorPreference{
       //return Colors.red;
     }
     if(value == 6){
-      warna = Colors.yellow;
+      warna = Color(0xFF246BFD);
       //return Colors.yellow;
     }
   }
