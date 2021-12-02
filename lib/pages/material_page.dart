@@ -130,137 +130,154 @@ class _materialPageState extends State<materialPage>{
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: 24.0,
-            vertical: 8.0
-        ),
-        child: Column(
-          children: [
-            Container(
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Software Architecture',
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 8.0
+          ),
+          child: Column(
+            children: [
+              Container(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Software Architecture',
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20.0),
+                  ),
                 ),
               ),
-            ),
-            Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Note',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+              Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      alignment: Alignment.bottomCenter,
-                      icon: const Icon(
-                          Icons.edit_outlined, size: 20,color: Colors.white),
-                      tooltip: 'Edit',
-                      onPressed: () {
-                        showAlertDialogAddNote(context);
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        alignment: Alignment.bottomCenter,
+                        icon: const Icon(
+                            Icons.edit_outlined, size: 20,color: Colors.white),
+                        tooltip: 'Edit',
+                        onPressed: () {
+                          showAlertDialogAddNote(context);
                         },
+                      ),
                     ),
-                  ),
-                ]
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
-              height: 2.0,
-              width: 400.0,
-              color: warna,
-            ),
-            Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(color: Colors.white, fontSize: 16)
+                  ]
               ),
-            Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Video',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                height: 2.0,
+                width: 400.0,
+                color: warna,
+              ),
+              Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(color: Colors.white, fontSize: 16)
+              ),
+              Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Video',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      alignment: Alignment.bottomCenter,
-                      icon: const Icon(
-                        Icons.edit_outlined, size: 20,color: Colors.white),
-                      tooltip: 'Edit',
-                      onPressed: () {
-                        showAlertDialogAddVideo(context);
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        alignment: Alignment.bottomCenter,
+                        icon: const Icon(
+                            Icons.edit_outlined, size: 20,color: Colors.white),
+                        tooltip: 'Edit',
+                        onPressed: () {
+                          showAlertDialogAddVideo(context);
                         },
+                      ),
+                    ),
+                  ]
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                height: 2.0,
+                width: 400.0,
+                color: warna,
+              ),
+              YoutubePlayerBuilder(
+                  player: YoutubePlayer(
+                    controller: _controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: warna,
+                    progressColors: ProgressBarColors(
+                      playedColor: warna,
+                      handleColor: warna,
                     ),
                   ),
-                ]
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
-              height: 2.0,
-              width: 400.0,
-              color: warna,
-            ),
-            YoutubePlayer(
-                controller: _controller,
-              showVideoProgressIndicator: true,
-              progressIndicatorColor: warna,
-            ),
-            Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'To Do',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+                  builder: (context, player){
+                    return Column(
+                      children: [
+                        // some widgets
+                        player,
+                        //some other widgets
+                      ],
+                    );
+                  }
+              ),
+              Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'To Do',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      alignment: Alignment.bottomCenter,
-                      icon: const Icon(
-                        Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
-                      tooltip: 'Edit',
-                      onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddTodoPage()));
-                      },
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        alignment: Alignment.bottomCenter,
+                        icon: const Icon(
+                            Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
+                        tooltip: 'Edit',
+                        onPressed: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddTodoPage()));
+                        },
+                      ),
                     ),
-                  ),
-                ]
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
-              height: 2.0,
-              width: 400.0,
-              color: warna,
-            ),
-          ],
+                  ]
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                height: 2.0,
+                width: 400.0,
+                color: warna,
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }
