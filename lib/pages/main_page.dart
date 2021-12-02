@@ -232,7 +232,7 @@ class _MainPageState extends State<MainPage> {
 
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Done'),
+      child: Text('Done', style: TextStyle(color: warna)),
       onPressed: () {
         deleteTodoById(currentTodo.todo_id!);
         Navigator.of(context)
@@ -271,7 +271,7 @@ class _MainPageState extends State<MainPage> {
 
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Delete'),
+      child: Text('Delete', style: TextStyle(color: warna)),
       onPressed: () {
         deleteSubjectById(currentSubject.subject_id!);
         Navigator.of(context)
