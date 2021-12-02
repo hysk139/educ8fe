@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
 import 'package:flutter_login_ui/models/users.dart';
-import 'package:flutter_login_ui/helpers/color_preference.dart';
+import 'package:flutter_login_ui/helpers/preference.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
@@ -57,6 +57,8 @@ class _ProfilePageState extends State<ProfilePage>{
     Widget continueButton = TextButton(
       child: Text("Continue", style: TextStyle(color: warna)),
       onPressed:  () {
+        Preference.setUser(0);
+        Preference.setIsViewed(0);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
     );
@@ -217,7 +219,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(5);
+                                                              Preference.setEducColor(5);
                                                               warna = Colors.red;
                                                               setState(() {});
                                                             },
@@ -227,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(4);
+                                                              Preference.setEducColor(4);
                                                               warna = Colors.pink;
                                                               setState(() {});
                                                             },
@@ -237,7 +239,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(2);
+                                                              Preference.setEducColor(2);
                                                               warna = Colors.green;
                                                               setState(() {});
                                                             },
@@ -247,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(6);
+                                                              Preference.setEducColor(6);
                                                               warna = Color(0xFF246BFD);
                                                               setState(() {});
                                                             },
@@ -257,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                           flex: 1,
                                                           child: IconButton(
                                                               onPressed: (){
-                                                                ColorPreference.setEducColor(1);
+                                                                Preference.setEducColor(1);
                                                                 warna = Color(0xFFCA85EB);
                                                                 setState(() {});
                                                               },
@@ -267,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                                         flex: 1,
                                                         child: IconButton(
                                                             onPressed: (){
-                                                              ColorPreference.setEducColor(3);
+                                                              Preference.setEducColor(3);
                                                               warna = Colors.purple;
                                                               setState(() {});
                                                             },

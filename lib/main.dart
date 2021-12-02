@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'helpers/color_preference.dart';
+import 'helpers/preference.dart';
 import 'helpers/globals.dart';
 import 'pages/splash_screen.dart';
 
@@ -17,7 +17,7 @@ class App extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //if (prefs == null) return 0;
     int value = prefs.getInt('color') ?? 0;
-    ColorPreference.getWarna(value);
+    Preference.getWarna(value);
   }
 
   @override

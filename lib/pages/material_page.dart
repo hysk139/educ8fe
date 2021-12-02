@@ -1,10 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
+//import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'add_todo_page.dart';
 import 'topic_page.dart';
+import 'package:flutter/material.dart';
 
-class materialPage extends StatelessWidget {
-  const materialPage({Key? key}) : super(key: key);
+class materialPage extends StatefulWidget{
+  const materialPage({Key? key}): super(key:key);
+
+  @override
+  _materialPageState createState() => _materialPageState();
+}
+
+class _materialPageState extends State<materialPage>{
 
   static const IconData arrow_back_ios_rounded = IconData(0xf571, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
@@ -90,6 +102,45 @@ class materialPage extends StatelessWidget {
         return addnote;
       },
     );
+  }
+
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: 'tcodrIK2P_I',
+      params: const YoutubePlayerParams(
+        playlist: [
+          'nPt8bK2gbaU',
+          'K18cpp_-gP8',
+          'iLnmTe5Q2Qw',
+          '_WoCV4c6XOE',
+          'KmzdUe0RSJo',
+          '6jZDSSZZxjQ',
+          'p2lYr3vM_1w',
+          '7QUtEmBT_-w',
+          '34_PXCzGw1M',
+        ],
+        startAt: const Duration(minutes: 1, seconds: 36),
+        showControls: true,
+        showFullscreenButton: true,
+        desktopMode: false,
+        privacyEnhanced: true,
+        useHybridComposition: true,
+      ),
+    );
+    _controller.onEnterFullscreen = () {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      log('Entered Fullscreen');
+    };
+    _controller.onExitFullscreen = () {
+      log('Exited Fullscreen');
+    };
   }
 
   @override
@@ -197,6 +248,37 @@ class materialPage extends StatelessWidget {
               height: 2.0,
               width: 400.0,
               color: warna,
+            ),
+            YoutubeValueBuilder(
+              controller: _controller,
+              builder: (context, value) {
+                return AnimatedCrossFade(
+                  firstChild: const SizedBox.shrink(),
+                  secondChild: Material(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            YoutubePlayerController.getThumbnail(
+                              videoId:
+                              _controller.params.playlist.first,
+                              quality: ThumbnailQuality.medium,
+                            ),
+                          ),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                  crossFadeState: value.isReady
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 300),
+                );
+              },
             ),
             Row(
                 children: [

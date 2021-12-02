@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/helpers/preference.dart';
+import 'package:flutter_login_ui/helpers/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'boarding_page.dart';
 import 'login_page.dart';
+import 'main_page.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key, required this.title}) : super(key: key);
@@ -17,12 +21,40 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
 
+  static getIsViewed() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //if (prefs == null) return 0;
+    int value = prefs.getInt('isViewed') ?? 0;
+    Preference.getStatus(value);
+  }
+
+  static getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //if (prefs == null) return 0;
+    int value = prefs.getInt('userId') ?? 0;
+    Preference.getUserId(value);
+  }
+
   _SplashScreenState(){
+    getIsViewed();
+    getUser();
 
     new Timer(const Duration(milliseconds: 2000), (){
       setState(() {
-        Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => boardingPage()), (route) => false);
+        if (isViewed == 0){
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => boardingPage()), (route) => false);
+        }
+        else {
+          if (userID == 0){
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+          }
+          else {
+          Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => MainPage(text: userID)), (route) => false);
+          }
+        };
       });
     });
 

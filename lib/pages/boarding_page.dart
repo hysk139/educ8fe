@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/helpers/preference.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
 import 'login_page.dart';
 import 'material_page.dart';
@@ -55,13 +56,13 @@ class _boardingPageState extends State<boardingPage> {
     super.dispose();
   }
 
-  _storeOnboardInfo() async {
+  /*_storeOnboardInfo() async {
     print("Shared pref called");
     int isViewed = 0;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('onBoard', isViewed);
     print(prefs.getInt('onBoard'));
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _boardingPageState extends State<boardingPage> {
         actions: [
           TextButton(
             onPressed: () {
-              _storeOnboardInfo();
+              Preference.setIsViewed(1);
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => LoginPage()));
             },
@@ -152,7 +153,7 @@ class _boardingPageState extends State<boardingPage> {
                     onTap: () async {
                       print(index);
                       if (index == screens.length - 1) {
-                        await _storeOnboardInfo();
+                        await Preference.setIsViewed(1);;
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => LoginPage()));
                       }
