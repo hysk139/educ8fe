@@ -159,9 +159,28 @@ Future<List<Topic>> fetchTopicMain(int? subjectId) async{
 
 }
 
+
+deleteSubjectById(int subjectId) async {
+  final response = await
+  http.delete(Uri.parse('https://teameduc8.herokuapp.com/api/edit/delete/subject/${subjectId}'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete subject');
+  }
+}
+
 List<Topic> parseTopicMain(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
+}
+
+deleteTodoById(int todoId) async {
+  final response = await
+  http.delete(Uri.parse('https://teameduc8.herokuapp.com/api/edit/delete/todo/${todoId}'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete subject');
+  }
 }
 //======================
 
@@ -206,6 +225,84 @@ class _MainPageState extends State<MainPage> {
       context: context,
       builder: (BuildContext context) {
         return showInfo;
+      },
+    );
+  }
+
+  showAlertDialogDeleteTodo(BuildContext context, Todo currentTodo) {
+    TextEditingController customController = TextEditingController();
+
+
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Done'),
+      onPressed: () {
+        deleteTodoById(currentTodo.todo_id!);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog deleteTodo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Done With Task or Test?", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return deleteTodo;
+      },
+    );
+  }
+
+  showAlertDialogDelete(BuildContext context, Subjects currentSubject) {
+    TextEditingController customController = TextEditingController();
+
+
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Delete'),
+      onPressed: () {
+        deleteSubjectById(currentSubject.subject_id!);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainPage(text: widget.text,)
+            ),
+                (Route<dynamic> route) => false
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog deleteSubject = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Delete Subject?", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return deleteSubject;
       },
     );
   }
@@ -435,7 +532,8 @@ class _MainPageState extends State<MainPage> {
                                                             .delete_outline_rounded),
                                                         tooltip: 'Delete',
                                                         onPressed: () {
-                                                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                                          showAlertDialogDelete(context, snapshot.data![index]);
+
                                                         },
                                                       ),
                                                     )
@@ -520,8 +618,8 @@ class _MainPageState extends State<MainPage> {
                                                 icon: const Icon(Icons.check_outlined),
                                                 tooltip: 'Done',
                                                 onPressed: () {
+                                                  showAlertDialogDeleteTodo(context, snapshot.data![index]);
 
-                                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                                                 },
                                               ),
                                             ),

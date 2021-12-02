@@ -11,6 +11,70 @@ import 'material_page.dart';
 import 'package:flutter_login_ui/models/subjects.dart';
 import 'package:http/http.dart' as http;
 
+
+Future<Topic> editTopicName(String name, Topic currentTopic) async {
+  if (name==''){
+    name = currentTopic.topic_name!;
+  }
+
+  final response = await http.put(
+    Uri.parse('https://teameduc8.herokuapp.com/api/edit/update/topics/name/${currentTopic.topic_id}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      "topic_name": name
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return Topic.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to edit topic name.');
+  }
+}
+
+Future<Topic> createTopic(String topicName, int subjectId) async {
+
+  final response = await http.post(
+    Uri.parse('https://teameduc8.herokuapp.com/api/topics/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode({
+      "topic_name": topicName,
+      "subject_id" : subjectId,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return Topic.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create topic.');
+  }
+}
+
+
+deleteTopicById(int topicId, BuildContext context, int text, int text2, String sub) async {
+  final response = await
+  http.delete(Uri.parse('https://teameduc8.herokuapp.com/api/edit/delete/topics/${topicId}'));
+  Navigator.of(context)
+      .pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) =>
+              TopicPage(text: text! , text2: text2, sub : sub)
+      ),
+          (Route<dynamic> route) => false
+  );
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete topic');
+  }
+}
+
 Future<List<Topic>> fetchTopicInSubject(int? subjectId) async{
     final topicResponse = await
     http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${subjectId}'));
@@ -18,7 +82,7 @@ Future<List<Topic>> fetchTopicInSubject(int? subjectId) async{
     if (topicResponse.statusCode == 200) {
       return compute(parseTopic, topicResponse.body);
     } else {
-      throw Exception('Failed to load Subjects');
+      throw Exception('Failed to load topics');
     }
 
 }
@@ -43,6 +107,37 @@ class TopicPage extends  StatefulWidget{
 class _TopicPage extends State<TopicPage> {
   double _headerHeight = 10;
 
+  showAlertDialogDeleteTopic(BuildContext context, Topic currentTopic) {
+    TextEditingController customController = TextEditingController();
+
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Delete'),
+      onPressed: ()  {
+        deleteTopicById(currentTopic.topic_id!, context, widget.text!, widget.text2!, widget.sub! ) ;
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog editTopic = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Delete Topic?", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return editTopic;
+      },
+    );
+  }
+
+
   showAlertDialogAdd(BuildContext context) {
     TextEditingController customController = TextEditingController();
 
@@ -61,7 +156,15 @@ class _TopicPage extends State<TopicPage> {
       elevation: 5.0,
       child: Text('Add', style: TextStyle(color: warna)),
       onPressed: () {
-
+        createTopic(customController.text, widget.text!);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    TopicPage(text: widget.text , text2: widget.text2, sub : widget.sub)
+            ),
+                (Route<dynamic> route) => false
+        );
       },
     );
     // set up the AlertDialog
@@ -85,7 +188,7 @@ class _TopicPage extends State<TopicPage> {
     );
   }
 
-  showAlertDialogEdit(BuildContext context) {
+  showAlertDialogEdit(BuildContext context, Topic currentTopic) {
     TextEditingController customController = TextEditingController();
 
     Widget textField = TextField(
@@ -103,7 +206,15 @@ class _TopicPage extends State<TopicPage> {
       elevation: 5.0,
       child: Text('Edit', style: TextStyle(color: warna)),
       onPressed: () {
-
+        editTopicName(customController.text, currentTopic);
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    TopicPage(text: widget.text , text2: widget.text2, sub : widget.sub)
+            ),
+                (Route<dynamic> route) => false
+        );
       },
     );
     // set up the AlertDialog
@@ -208,7 +319,7 @@ class _TopicPage extends State<TopicPage> {
                                                         Icons.edit_outlined),
                                                     tooltip: 'Edit',
                                                     onPressed: () {
-                                                      showAlertDialogEdit(context);
+                                                      showAlertDialogEdit(context, snapshot.data![index]);
                                                       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                                                     },
                                                   ),
@@ -220,6 +331,7 @@ class _TopicPage extends State<TopicPage> {
                                                         .delete_outline_rounded),
                                                     tooltip: 'Delete',
                                                     onPressed: () {
+                                                      showAlertDialogDeleteTopic( context,  snapshot.data![index]);
                                                       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                                                     },
                                                   ),
