@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage>{
         iconTheme: IconThemeData(color: Colors.white),
         flexibleSpace:Container(
           decoration: BoxDecoration(
-            color: Color(0xFF252834),
+            color: Color(0xFF2364E9),
           ),
         ),
 
@@ -115,191 +115,199 @@ class _ProfilePageState extends State<ProfilePage>{
           )
         ],
       ),
-      body: FutureBuilder<List<Users>>(
-          future : fetchUsers(widget.text),
-          builder: (context, snapshot){
+      body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/Profile-Page.png"),
+                  fit: BoxFit.cover
+              ),
+            ),
+          child: FutureBuilder<List<Users>>(
+              future : fetchUsers(widget.text),
+              builder: (context, snapshot){
 
-            if (snapshot.hasData) {
-              return Container(
-                  child: ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SingleChildScrollView(
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: _headerHeight,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(width: 2, color: warna),
-                                        color: Color(0xFF383751),
-                                      ),
-                                      child: Icon(Icons.person, size: 80, color: Colors.white),
-                                    ),
-                                    SizedBox(height: 20, width: 20,),
-                                    Container(
-                                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
-                                        decoration: BoxDecoration(
-                                            color: warna,
-                                            borderRadius: BorderRadius.circular(50)
+                if (snapshot.hasData) {
+                  return Container(
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (BuildContext context, int index) {
+                            return SingleChildScrollView(
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    height: _headerHeight,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(width: 2, color: warna),
+                                            color: Color(0xFF383751),
+                                          ),
+                                          child: Icon(Icons.person, size: 80, color: Colors.white),
                                         ),
-                                        child: Text(snapshot.data![index].name!, style: TextStyle(fontSize: 20, color: Colors.white))
-                                    ),
-                                    SizedBox(height: 20,),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Card(
-                                            shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: warna, width: 1),
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: ListTile(
-                                              title: Text("Email", style: TextStyle(color: Colors.white)),
-                                              subtitle: Text(snapshot.data![index].email!, style: TextStyle(color: Colors.white)),
-                                              tileColor: Color(0xFF383751),
+                                        SizedBox(height: 20, width: 20,),
+                                        Container(
+                                            padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
+                                            decoration: BoxDecoration(
+                                                color: warna,
+                                                borderRadius: BorderRadius.circular(50)
                                             ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Card(
-                                            shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: warna, width: 1),
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: ListTile(
-                                              title: Text("Phone", style: TextStyle(color: Colors.white)),
-                                              subtitle: Text(snapshot.data![index].phone_number!, style: TextStyle(color: Colors.white)),
-                                              tileColor: Color(0xFF383751),
-                                            ),
-                                          ),
-                                          SizedBox(height: 10.0),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.fromLTRB(3,10,5,10),
-                                            decoration: ThemeHelper().buttonBoxDecoration(context),
-                                            child: ElevatedButton(
-                                              style: ThemeHelper().buttonStyle(context),
-                                              child: Padding(
-                                                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                                child: Text('LogOut'.toUpperCase(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),),
-                                              ),
-                                              onPressed:  () async{
-                                                showAlertDialog(context);
-                                                }
-                                                //After successful login we will redirect to profile page. Let's create profile page now
-                                                //
-                                            ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Card(
-                                            shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: warna, width: 1),
-                                                borderRadius: BorderRadius.circular(10)),
-                                            child: Column(
-                                              children: [
-                                                ListTile(
-                                                  title: Text("Theme", style: TextStyle(color: Colors.white)),
-                                                  subtitle: Text("Change your preference color!", style: TextStyle(color: Colors.white)),
+                                            child: Text(snapshot.data![index].name!, style: TextStyle(fontSize: 20, color: Colors.white))
+                                        ),
+                                        SizedBox(height: 20,),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Card(
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(color: warna, width: 1),
+                                                    borderRadius: BorderRadius.circular(10)),
+                                                child: ListTile(
+                                                  title: Text("Email", style: TextStyle(color: Colors.white)),
+                                                  subtitle: Text(snapshot.data![index].email!, style: TextStyle(color: Colors.white)),
                                                   tileColor: Color(0xFF383751),
                                                 ),
-                                                Container(
-                                                  color: Color(0xFF383751),
-                                                  child: Row(
+                                              ),
+                                              SizedBox(height: 10,),
+                                              Card(
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(color: warna, width: 1),
+                                                    borderRadius: BorderRadius.circular(10)),
+                                                child: ListTile(
+                                                  title: Text("Phone", style: TextStyle(color: Colors.white)),
+                                                  subtitle: Text(snapshot.data![index].phone_number!, style: TextStyle(color: Colors.white)),
+                                                  tileColor: Color(0xFF383751),
+                                                ),
+                                              ),
+                                              SizedBox(height: 10.0),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: EdgeInsets.fromLTRB(3,10,5,10),
+                                                decoration: ThemeHelper().buttonBoxDecoration(context),
+                                                child: ElevatedButton(
+                                                    style: ThemeHelper().buttonStyle(context),
+                                                    child: Padding(
+                                                      padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                                      child: Text('LogOut'.toUpperCase(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.white),),
+                                                    ),
+                                                    onPressed:  () async{
+                                                      showAlertDialog(context);
+                                                    }
+                                                  //After successful login we will redirect to profile page. Let's create profile page now
+                                                  //
+                                                ),
+                                              ),
+                                              SizedBox(height: 10,),
+                                              Card(
+                                                  shape: RoundedRectangleBorder(
+                                                      side: BorderSide(color: warna, width: 1),
+                                                      borderRadius: BorderRadius.circular(10)),
+                                                  child: Column(
                                                     children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: (){
-                                                              Preference.setEducColor(5);
-                                                              warna = Colors.red;
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(Icons.circle, color: Colors.red, size: 35)),
+                                                      ListTile(
+                                                        title: Text("Theme", style: TextStyle(color: Colors.white)),
+                                                        subtitle: Text("Change your preference color!", style: TextStyle(color: Colors.white)),
+                                                        tileColor: Color(0xFF383751),
                                                       ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: (){
-                                                              Preference.setEducColor(4);
-                                                              warna = Colors.pink;
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(Icons.circle, color: Colors.pink, size: 35)),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: (){
-                                                              Preference.setEducColor(2);
-                                                              warna = Colors.green;
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(Icons.circle, color: Colors.green, size: 35)),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: (){
-                                                              Preference.setEducColor(6);
-                                                              warna = Color(0xFF246BFD);
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(Icons.circle, color: Color(0xFF246BFD), size: 35)),
-                                                      ),
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: IconButton(
-                                                              onPressed: (){
-                                                                Preference.setEducColor(1);
-                                                                warna = Color(0xFFCA85EB);
-                                                                setState(() {});
-                                                              },
-                                                              icon: Icon(Icons.circle, color: Color(0xFFCA85EB), size: 35))
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: (){
-                                                              Preference.setEducColor(3);
-                                                              warna = Colors.purple;
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(Icons.circle, color: Colors.purple, size: 35)),
+                                                      Container(
+                                                        color: Color(0xFF383751),
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: IconButton(
+                                                                  onPressed: (){
+                                                                    Preference.setEducColor(5);
+                                                                    warna = Colors.red;
+                                                                    setState(() {});
+                                                                  },
+                                                                  icon: Icon(Icons.circle, color: Colors.red, size: 35)),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: IconButton(
+                                                                  onPressed: (){
+                                                                    Preference.setEducColor(4);
+                                                                    warna = Colors.pink;
+                                                                    setState(() {});
+                                                                  },
+                                                                  icon: Icon(Icons.circle, color: Colors.pink, size: 35)),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: IconButton(
+                                                                  onPressed: (){
+                                                                    Preference.setEducColor(2);
+                                                                    warna = Colors.green;
+                                                                    setState(() {});
+                                                                  },
+                                                                  icon: Icon(Icons.circle, color: Colors.green, size: 35)),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: IconButton(
+                                                                  onPressed: (){
+                                                                    Preference.setEducColor(6);
+                                                                    warna = Color(0xFF246BFD);
+                                                                    setState(() {});
+                                                                  },
+                                                                  icon: Icon(Icons.circle, color: Color(0xFF246BFD), size: 35)),
+                                                            ),
+                                                            Expanded(
+                                                                flex: 1,
+                                                                child: IconButton(
+                                                                    onPressed: (){
+                                                                      Preference.setEducColor(1);
+                                                                      warna = Color(0xFFCA85EB);
+                                                                      setState(() {});
+                                                                    },
+                                                                    icon: Icon(Icons.circle, color: Color(0xFFCA85EB), size: 35))
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: IconButton(
+                                                                  onPressed: (){
+                                                                    Preference.setEducColor(3);
+                                                                    warna = Colors.purple;
+                                                                    setState(() {});
+                                                                  },
+                                                                  icon: Icon(Icons.circle, color: Colors.purple, size: 35)),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ],
-                                                  ),
-                                                ),
-                                              ],
-                                            )
+                                                  )
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                        //return Text(snapshot.data![index].name!);
-                      }
-                  )
-              );
-            }
-            else{
-              return Center(child: CircularProgressIndicator(color: Colors.white));
-            }
-          }
-      )
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                            //return Text(snapshot.data![index].name!);
+                          }
+                      )
+                  );
+                }
+                else{
+                  return Center(child: CircularProgressIndicator(color: Colors.white));
+                }
+              }
+          )
+        )
     );
       /*SingleChildScrollView(
         child: Stack(

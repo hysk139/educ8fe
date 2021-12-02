@@ -10,7 +10,10 @@ import 'topic_page.dart';
 import 'package:flutter/material.dart';
 
 class materialPage extends StatefulWidget{
-  const materialPage({Key? key}): super(key:key);
+  final int? text, text2;
+  final String? sub, top;
+
+  materialPage({Key? key, @required this.text, required this.text2, required this.sub, required this.top}) : super(key: key);
 
   @override
   _materialPageState createState() => _materialPageState();
@@ -125,7 +128,12 @@ class _materialPageState extends State<materialPage>{
         leading: IconButton(
           onPressed: () {
             //tambahin back kemana
-            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) =>
+                    TopicPage(text: widget.text,
+                      text2: widget.text2,
+                    sub: widget.sub,
+                    )));
           },
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
@@ -142,7 +150,7 @@ class _materialPageState extends State<materialPage>{
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Software Architecture',
+                    widget.top!,
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20.0),
                   ),
                 ),
@@ -182,7 +190,8 @@ class _materialPageState extends State<materialPage>{
                 width: 400.0,
                 color: warna,
               ),
-              Text("Ini adalah contoh notes sjdxjsbidxsaihdxiasuhdihasniukcsuaidbiueda", style: TextStyle(color: Colors.white, fontSize: 16)
+              Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                  style: TextStyle(color: Colors.white, fontSize: 16)
               ),
               Row(
                   children: [
@@ -262,7 +271,12 @@ class _materialPageState extends State<materialPage>{
                             Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
                         tooltip: 'Edit',
                         onPressed: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddTodoPage()));
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) =>
+                                  AddTodoPage(text: widget.text,
+                                    text2: widget.text2,
+                                    sub: widget.sub,
+                                    top: widget.top,)));
                         },
                       ),
                     ),

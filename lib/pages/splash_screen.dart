@@ -82,7 +82,15 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Container(
             height: 270.0,
             width: 180.0,
-            child: Center(
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              border: Border.all(width: 2, color: Colors.white),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/logo.png"),
+                  fit: BoxFit.cover
+              ),
+            ),
+            /*child: Center(
               child: Text(
                 'ED\nUC\n∞',
                 textAlign: TextAlign.center,
@@ -93,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
               shape: BoxShape.rectangle,
               color: Color(0xFF252834),
               border: Border.all(width: 2, color: Colors.white),
-            ),
+            ),*/
           ),
         ),
       ),

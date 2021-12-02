@@ -66,7 +66,7 @@ deleteTopicById(int topicId, BuildContext context, int text, int text2, String s
       .pushAndRemoveUntil(
       MaterialPageRoute(
           builder: (context) =>
-              TopicPage(text: text! , text2: text2, sub : sub)
+              TopicPage(text: text , text2: text2, sub : sub)
       ),
           (Route<dynamic> route) => false
   );
@@ -96,7 +96,7 @@ class TopicPage extends  StatefulWidget{
   final int? text, text2;
   final String? sub;
 
-  TopicPage({Key? key, @required this.text, @required this.text2, required this.sub}) : super(key: key);
+  TopicPage({Key? key, @required this.text, required this.text2, required this.sub}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -112,7 +112,7 @@ class _TopicPage extends State<TopicPage> {
 
     Widget submitButton = MaterialButton(
       elevation: 5.0,
-      child: Text('Delete'),
+      child: Text('Delete', style: TextStyle(color: warna)),
       onPressed: ()  {
         deleteTopicById(currentTopic.topic_id!, context, widget.text!, widget.text2!, widget.sub! ) ;
       },
@@ -291,7 +291,10 @@ class _TopicPage extends State<TopicPage> {
                                         Navigator.pushReplacement(context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    materialPage()));
+                                                    materialPage(text: widget.text,
+                                                        text2: widget.text2,
+                                                        sub: widget.sub,
+                                                        top: snapshot.data![index].topic_name!)));
                                       },
                                       child: Card(
                                           color: Colors.grey.shade300,

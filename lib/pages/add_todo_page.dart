@@ -16,7 +16,10 @@ import 'profile_page.dart';
 import 'login_page.dart';
 
 class AddTodoPage extends  StatefulWidget{
-  const AddTodoPage({Key? key}): super(key:key);
+  final int? text, text2;
+  final String? sub, top;
+
+  AddTodoPage({Key? key, @required this.text, required this.text2, required this.sub, required this.top}) : super(key: key);
 
   @override
   _AddTodoPage createState() => _AddTodoPage();
@@ -49,7 +52,12 @@ class _AddTodoPage extends State<AddTodoPage>{
         leading: IconButton(
           onPressed: () {
             //tambahin back kemana
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => materialPage()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) =>
+                    materialPage(text: widget.text,
+                      text2: widget.text2,
+                      sub: widget.sub,
+                      top: widget.top,)));
           },
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
@@ -193,7 +201,10 @@ class _AddTodoPage extends State<AddTodoPage>{
                                       .pushAndRemoveUntil(
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              materialPage()
+                                              materialPage(text: widget.text,
+                                                  text2: widget.text2,
+                                                  sub: widget.sub,
+                                                  top: widget.top)
                                       ),
                                           (Route<dynamic> route) => false
                                   );
