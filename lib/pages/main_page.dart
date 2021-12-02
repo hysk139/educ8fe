@@ -148,17 +148,19 @@ Future<Subjects> createSubjects(String subjectName, int userId) async {
 }
 
 Future<List<Topic>> fetchTopicMain(int? subjectId) async{
-  final topicResponse = await
+  final topicMainResponse = await
   http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${subjectId}'));
-
-  if (topicResponse.statusCode == 200) {
-    return compute(parseTopic, topicResponse.body);
+  if (topicMainResponse.statusCode == 200) {
+    return compute(parseTopicMain, topicMainResponse.body);
   } else {
     throw Exception('Failed to load Subjects');
   }
-
 }
 
+List<Topic> parseTopicMain(String responseBody) {
+  final parsedTopic = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  return parsedTopic.map<Topic>((json) => Topic.fromJson(json)).toList();
+}
 
 deleteSubjectById(int subjectId) async {
   final response = await
@@ -167,11 +169,6 @@ deleteSubjectById(int subjectId) async {
   if (response.statusCode != 200) {
     throw Exception('Failed to delete subject');
   }
-}
-
-List<Topic> parseTopicMain(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  return parsed.map<Topic>((json) => Topic.fromJson(json)).toList();
 }
 
 deleteTodoById(int todoId) async {
@@ -490,23 +487,25 @@ class _MainPageState extends State<MainPage> {
                                         borderRadius: BorderRadius.circular(20),
                                         color: Color(0xFF383751),
                                       ),
-                                      child: SingleChildScrollView(
+                                      child: GestureDetector(
+                                          onTap: (){
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
+                                                text2: widget.text, sub: snapshot.data![index].name!)));
+                                          },
                                           child: Column(
-                                            children:
+                                            children: <Widget>
                                             [
-                                              GestureDetector(
-                                                  onTap: (){
-                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
-                                                        text2: widget.text, sub: snapshot.data![index].name!)));
-                                                  }),
                                               Row(
                                                   children :[
                                                     Expanded(
-                                                      flex: 4,
-                                                        child: Text(snapshot.data![index].name!,
-                                                          textAlign: TextAlign.left,
-                                                          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
-                                                        ),
+                                                        flex: 4,
+                                                        child: SingleChildScrollView(
+                                                          scrollDirection: Axis.horizontal,
+                                                          child: Text(snapshot.data![index].name!,
+                                                            textAlign: TextAlign.left,
+                                                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                                                          ),
+                                                        )
                                                     ),
 
                                                     Expanded(
@@ -539,43 +538,63 @@ class _MainPageState extends State<MainPage> {
                                                     )
                                                   ]
                                               ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                                height: 2.0,
+                                                width: 400.0,
+                                                color: warna,
+                                              ),
                                               /*FutureBuilder<List<Topic>>(
-                                                  future : fetchTopicMain(),
-                                                  builder: (context, snapshot){
+                                                    future : fetchTopicMain(2),
+                                                    builder: (context, snapshot){
 
-                                                    if (snapshot.hasData) {
-                                                      return Container(
-                                                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                                          child: ListView.builder(
-                                                              itemCount: snapshot.data!.length,
-                                                              scrollDirection: Axis.vertical,
-                                                              itemBuilder: (BuildContext context, int index) {
-                                                                return Container(
-                                                                  child: Text(
-                                                                  snapshot.data![index].topic_name!,
-                                                                  textAlign: TextAlign.left,
-                                                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
-                                                                ),
-                                                                );
-                                                              }
-                                                          )
-                                                      );
+                                                      if (snapshot.hasData) {
+                                                        return Container(
+                                                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                                            child: ListView.builder(
+                                                                itemCount: snapshot.data!.length,
+                                                                itemBuilder: (BuildContext context, int index) {
+                                                                  return Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        snapshot.data![index].topic_name!,
+                                                                        textAlign: TextAlign.left,
+                                                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                      ),
+                                                                      Text(
+                                                                        snapshot.data![index].topic_name!,
+                                                                        textAlign: TextAlign.left,
+                                                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                      ),
+                                                                      Text(
+                                                                        snapshot.data![index].topic_name!,
+                                                                        textAlign: TextAlign.left,
+                                                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                      ),
+                                                                      Text(
+                                                                        snapshot.data![index].topic_name!,
+                                                                        textAlign: TextAlign.left,
+                                                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                      ),
+                                                                      Text(
+                                                                        snapshot.data![index].topic_name!,
+                                                                        textAlign: TextAlign.left,
+                                                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.white),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                }
+                                                            )
+                                                        );
+                                                      }
+                                                      else{
+                                                        return Center(child: CircularProgressIndicator(color: warna));
+                                                      }
                                                     }
-                                                    else{
-                                                      return Center(child: CircularProgressIndicator(color: warna));
-                                                    }
-                                                  }
-                                              ),*/
-                                              /*Divider(
-                                                  color: Colors.white,
-                                                  //height: 25,
-                                                  thickness: 3,
-                                                  indent: 5,
-                                                  endIndent: 5,
                                                 ),*/
-                                              ],
-                                          )
-                                      ),
+                                            ],
+                                          ),
+                                          ),
                                   ),
                                   staggeredTileBuilder: (int index) =>
                                   new StaggeredTile.count(2, index.isEven ? 3 : 2),
