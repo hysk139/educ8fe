@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^2.1.0
   youtube_player_iframe: ^2.2.2
   youtube_player_flutter: ^8.0.0
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:

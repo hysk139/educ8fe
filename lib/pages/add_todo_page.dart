@@ -8,16 +8,45 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
+import 'package:flutter_login_ui/models/todo.dart';
+import 'package:flutter_login_ui/models/topic.dart';
 import 'package:flutter_login_ui/models/users.dart';
 import 'package:flutter_login_ui/pages/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'material_page.dart';
 import 'profile_page.dart';
 import 'login_page.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+
+
+Future<Todo> createTodo(String title, String description, String deadline, String type, int topicId) async {
+
+  final response = await http.post(
+    Uri.parse('https://teameduc8.herokuapp.com/api/todo/add/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode({
+      "title": title,
+      "description" : description,
+      "deadline" : deadline,
+      "type" : type,
+      "topic_id" : topicId,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return Todo.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create subjects.');
+  }
+}
 
 class AddTodoPage extends  StatefulWidget{
   final int? text, text2;
-  final String? sub, top;
+  final String? sub;
+  final Topic? top;
 
   AddTodoPage({Key? key, @required this.text, required this.text2, required this.sub, required this.top}) : super(key: key);
 
@@ -26,13 +55,41 @@ class AddTodoPage extends  StatefulWidget{
 }
 
 class _AddTodoPage extends State<AddTodoPage>{
+  showAlertDialogPickedDateTime(BuildContext context, String dateTime) {
+    Widget doneButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('OK', style: TextStyle(color: warna)),
+      onPressed: ()  {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+    AlertDialog doneDateTime = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Date Time Picked : " + dateTime, textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        doneButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return doneDateTime;
+      },
+    );
+  }
+
   double _headerHeight = 10;
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController titleTodo = TextEditingController();
   TextEditingController descTodo = TextEditingController();
   TextEditingController deadline = TextEditingController();
-  int _value = 1;
+  String _value = "TEST";
+  String dateTimePicked = "";
 
   @override
   Widget build(BuildContext context) {
@@ -126,25 +183,24 @@ class _AddTodoPage extends State<AddTodoPage>{
                         alignment: Alignment.topLeft,
                         margin: EdgeInsets.fromLTRB(3,0,5,10),
                         child:
-                        Text(
-                          'Deadline',
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
+                        TextButton(
+                            onPressed: () {
+                              DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime(2018, 3, 5),
+                                  maxTime: DateTime(2030, 12, 31), onChanged: (date) {
+                                    print('change $date');
+                                  }, onConfirm: (date) {
+                                    print('confirm $date');
+                                    dateTimePicked = date.toString();
+                                    showAlertDialogPickedDateTime(context, dateTimePicked);
+                                  }, locale: LocaleType.en);
+                            },
+                            child: Text(
+                              'Pick the date and time : ' + dateTimePicked,
+                              style: TextStyle(color: Colors.blue),
+                            ))
                       ),
-                      Container(
-                        child: TextFormField(
-                          controller: deadline,
-                          decoration: ThemeHelper().textInputDecoration("Insert The Deadline"),
-                          validator: (val) {
-                            if(val!.isEmpty){
-                              return "Deadline Cannot Empty";
-                            }
-                            return null;
-                          },
-                        ),
-                        decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                      ),
-                      SizedBox(height: 15.0),
 
                       Container(
                         alignment: Alignment.topLeft,
@@ -164,14 +220,14 @@ class _AddTodoPage extends State<AddTodoPage>{
                             items: [
                               DropdownMenuItem(
                                 child: Text("TEST"),
-                                value: 1,
+                                value: "TEST",
                               ),
                               DropdownMenuItem(
                                 child: Text("TASK"),
-                                value: 2,
+                                value: "TASK",
                               ),
                             ],
-                            onChanged: (int? value) {
+                            onChanged: (String? value) {
                               setState(() {
                                 _value = value!;
                               });
@@ -196,6 +252,7 @@ class _AddTodoPage extends State<AddTodoPage>{
                             ),
                           ),
                             onPressed: () async {
+                              createTodo(titleTodo.text, descTodo.text, dateTimePicked, _value, widget.top!.topic_id!);
                                 if (_formKey.currentState!.validate()) {
                                   Navigator.of(context)
                                       .pushAndRemoveUntil(

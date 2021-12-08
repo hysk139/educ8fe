@@ -12,6 +12,9 @@ import 'package:flutter_login_ui/models/subjects.dart';
 import 'package:http/http.dart' as http;
 
 
+
+
+
 Future<Topic> editTopicName(String name, Topic currentTopic) async {
   if (name==''){
     name = currentTopic.topic_name!;
@@ -294,7 +297,7 @@ class _TopicPage extends State<TopicPage> {
                                                     materialPage(text: widget.text,
                                                         text2: widget.text2,
                                                         sub: widget.sub,
-                                                        top: snapshot.data![index].topic_name!)));
+                                                        top: snapshot.data![index],)));
                                       },
                                       child: Card(
                                           color: Colors.grey.shade300,
