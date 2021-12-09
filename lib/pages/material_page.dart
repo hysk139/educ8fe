@@ -434,6 +434,67 @@ class _materialPageState extends State<materialPage>{
                 width: 400.0,
                 color: warna,
               ),
+              /*FutureBuilder<List<Todo>>(
+                  future : fetchAllTodo(widget.text),
+                  builder: (context, snapshot){
+                    if (snapshot.hasData) {
+                      return Container(
+                          padding: EdgeInsets.fromLTRB(15,10,10,10),
+                          child: ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (BuildContext context, int index) {
+
+                                return Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(snapshot.data![index].title!,
+                                              style: TextStyle(color: Colors.white)),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            icon: const Icon(Icons.check_outlined),
+                                            tooltip: 'Done',
+                                            color: Colors.white,
+                                            onPressed: () {
+                                              //showAlertDialogDeleteTodo(context, snapshot.data![index]);
+
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            icon: const Icon(Icons.info_outline_rounded ),
+                                            tooltip: 'Info',
+                                            color: Colors.white,
+                                            onPressed: () {
+                                              /*showAlertDialogTodo(
+                                                  context,
+                                                  snapshot.data![index].title!,
+                                                  snapshot.data![index].type!,
+                                                  snapshot.data![index].deadline!,
+                                                  snapshot.data![index].description!);*/
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              }
+                          )
+                      );
+                    }
+                    else{
+                      return Center(child: CircularProgressIndicator(color: Colors.white));
+                    }
+                  }
+              )*/
             ],
           ),
         ),

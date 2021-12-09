@@ -702,67 +702,6 @@ class _MainPageState extends State<MainPage> {
                                         ),
                                       ],
                                     );
-
-
-                                  /*CheckboxListTile(
-                                  title: Text(snapshot.data![index].title!),
-                                  secondary: const Icon(Icons.code),
-                                  autofocus: false,
-                                  activeColor: Colors.green,
-                                  checkColor: Colors.white,
-                                  selected: _value,
-                                  value: _value, onChanged: (bool? value) {  },
-
-                                );
-
-                                Container(
-                                  margin: EdgeInsets.all(5),
-                                  height: 130,
-                                  child: Stack(
-                                      children: [
-                                        Positioned(
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            child: Container(
-
-                                              height : 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                      bottomLeft: Radius.circular(20),
-                                                      bottomRight: Radius.circular(20),
-                                                      topRight: Radius.circular(20),
-                                                      topLeft: Radius.circular(20)
-                                                  ),
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment.bottomCenter,
-                                                      end : Alignment.topCenter,
-                                                      colors: [
-                                                        Colors.purpleAccent.withOpacity(0.8),
-                                                        Colors.purple.withOpacity(0.8)
-                                                      ]
-                                                  )
-                                              ),
-                                            )
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                Text(snapshot.data![index].title!,
-                                                    style: TextStyle(color: Colors.white, fontSize: 25))
-                                              ],
-                                            ),
-                                          ),
-                                        )
-
-                                      ]
-                                  ),
-                                );*/
-
                               }
                           )
                       );
