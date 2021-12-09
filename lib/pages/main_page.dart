@@ -198,13 +198,52 @@ class _MainPageState extends State<MainPage> {
 
   showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
     Widget info = Column(
-      children: [
-        Text("Title", textAlign: TextAlign.left,style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'montserrat')),
-        Text(title, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
-        Text(type, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
-        Text(deadline, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
-        Text (Desc, textAlign: TextAlign.left,style: TextStyle(fontSize: 17, color: Colors.black, fontFamily: 'montserrat')),
-      ]
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Title", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(title, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Type", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(type, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Deadline", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(deadline, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Description", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(Desc, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+        ]
     );
     // set up the AlertDialog
     AlertDialog showInfo = AlertDialog(
@@ -629,13 +668,14 @@ class _MainPageState extends State<MainPage> {
                                             Expanded(
                                               flex: 6,
                                                 child: Text(snapshot.data![index].title!,
-                                                    style: TextStyle(color: Colors.black)),
+                                                    style: TextStyle(color: Colors.white)),
                                             ),
                                             Expanded(
                                               flex: 1,
                                               child: IconButton(
                                                 icon: const Icon(Icons.check_outlined),
                                                 tooltip: 'Done',
+                                                color: Colors.white,
                                                 onPressed: () {
                                                   showAlertDialogDeleteTodo(context, snapshot.data![index]);
 
@@ -647,6 +687,7 @@ class _MainPageState extends State<MainPage> {
                                               child: IconButton(
                                                 icon: const Icon(Icons.info_outline_rounded ),
                                                 tooltip: 'Info',
+                                                color: Colors.white,
                                                 onPressed: () {
                                                   showAlertDialogTodo(
                                                       context,
