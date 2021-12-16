@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/helpers/globals.dart';
+import 'package:flutter_login_ui/models/todo.dart';
 import 'package:flutter_login_ui/models/topic.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 //import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -12,16 +14,21 @@ import 'topic_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-Future<Topic> fetchTopicSingular (int? subjectId, int? topicId) async{
-  final topicResponse = await
-  http.get(Uri.parse('https://teameduc8.herokuapp.com/api/topics/${subjectId}/${topicId}'));
+Future<List<Todo>> fetchTodoPerTopic (int? topicId) async{
+  final todoResponse = await
+  http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topicId}'));
 
-  if (topicResponse.statusCode == 200) {
-    return await Topic.fromJson(jsonDecode(topicResponse.body));
+  if (todoResponse.statusCode == 200) {
+    return compute(parseTodo, todoResponse.body);
   } else {
     throw Exception('Failed to load topics');
   }
 
+}
+
+List<Todo> parseTodo(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  return parsed.map<Todo>((json) => Todo.fromJson(json)).toList();
 }
 
 Future<Topic> editTopicVideo(String video, Topic currentTopic) async {
@@ -259,6 +266,74 @@ class _materialPageState extends State<materialPage>{
       },
     );
   }
+  showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
+    Widget info = Column(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Title", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(title, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Type", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(type, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Deadline", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(deadline, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: warna, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: Text("Description", style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              subtitle: Text(Desc, style: TextStyle(color: Colors.black, fontFamily: 'montserrat')),
+              //tileColor: Color(0xFF383751),
+            ),
+          ),
+          SizedBox(height: 10,),
+        ]
+    );
+    // set up the AlertDialog
+    AlertDialog showInfo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Informasi"),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        info,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return showInfo;
+      },
+    );
+  }
 
 
   @override
@@ -434,10 +509,11 @@ class _materialPageState extends State<materialPage>{
                 width: 400.0,
                 color: warna,
               ),
-              /*FutureBuilder<List<Todo>>(
-                  future : fetchAllTodo(widget.text),
+              FutureBuilder<List<Todo>>(
+                  future : fetchTodoPerTopic(widget.top!.topic_id!),
                   builder: (context, snapshot){
                     if (snapshot.hasData) {
+                      print(snapshot.data);
                       return Container(
                           padding: EdgeInsets.fromLTRB(15,10,10,10),
                           child: ListView.builder(
@@ -473,12 +549,12 @@ class _materialPageState extends State<materialPage>{
                                             tooltip: 'Info',
                                             color: Colors.white,
                                             onPressed: () {
-                                              /*showAlertDialogTodo(
+                                              showAlertDialogTodo(
                                                   context,
                                                   snapshot.data![index].title!,
                                                   snapshot.data![index].type!,
                                                   snapshot.data![index].deadline!,
-                                                  snapshot.data![index].description!);*/
+                                                  snapshot.data![index].description!);
                                             },
                                           ),
                                         )
@@ -494,7 +570,7 @@ class _materialPageState extends State<materialPage>{
                       return Center(child: CircularProgressIndicator(color: Colors.white));
                     }
                   }
-              )*/
+              )
             ],
           ),
         ),
