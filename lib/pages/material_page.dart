@@ -14,6 +14,15 @@ import 'topic_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+deleteTodoById(int todoId) async {
+  final response = await
+  http.delete(Uri.parse('https://teameduc8.herokuapp.com/api/edit/delete/todo/${todoId}'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete subject');
+  }
+}
+
 Future<List<Todo>> fetchTodoPerTopic (int? topicId) async{
   final todoResponse = await
   http.get(Uri.parse('https://teameduc8.herokuapp.com/api/todo/${topicId}'));
@@ -191,6 +200,12 @@ class _materialPageState extends State<materialPage>{
       elevation: 5.0,
       child: Text('Edit', style: TextStyle(color: warna),),
       onPressed: () async {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) =>
+                TopicPage(text: widget.text,
+                  text2: widget.text2,
+                  sub: widget.sub,
+                )));
           Topic newTopic = await editTopicMaterials(customController.text, currentTopic);
           showAlertDialogDoneEdit(context, newTopic);
               /*Navigator.of(context)
@@ -266,6 +281,7 @@ class _materialPageState extends State<materialPage>{
       },
     );
   }
+
   showAlertDialogTodo(BuildContext context, String title, String type, String deadline, String Desc) {
     Widget info = Column(
         children: [
@@ -335,6 +351,42 @@ class _materialPageState extends State<materialPage>{
     );
   }
 
+  showAlertDialogDeleteTodo(BuildContext context, Todo currentTodo) {
+
+
+    Widget submitButton = MaterialButton(
+      elevation: 5.0,
+      child: Text('Done', style: TextStyle(color: warna)),
+      onPressed: () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) =>
+                TopicPage(text: widget.text,
+                  text2: widget.text2,
+                  sub: widget.sub,
+                )));
+        deleteTodoById(currentTodo.todo_id!);
+
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog deleteTodo = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text("Done With Task or Test?", textAlign: TextAlign.center),
+      titleTextStyle: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: 'montserrat'),
+      actions: [
+        submitButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return deleteTodo;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -376,8 +428,11 @@ class _materialPageState extends State<materialPage>{
                   ),
                 ),
               ),
+
+
               Row(
                   children: [
+
                     Expanded(
                       flex: 6,
                       child: Container(
@@ -413,6 +468,113 @@ class _materialPageState extends State<materialPage>{
               ),
               Text((widget.top!.materials == null || widget.top!.materials == "") ? "-" : widget.top!.materials!,
                   style: TextStyle(color: Colors.white, fontSize: 16)
+              ),
+
+              Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'To Do',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        alignment: Alignment.bottomCenter,
+                        icon: const Icon(
+                            Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
+                        tooltip: 'Edit',
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) =>
+                                  AddTodoPage(text: widget.text,
+                                    text2: widget.text2,
+                                    sub: widget.sub,
+                                    top: widget.top,)));
+                        },
+                      ),
+                    ),
+                  ]
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                height: 2.0,
+                width: 400.0,
+                color: warna,
+              ),
+
+              Container(
+                child: FutureBuilder<List<Todo>>(
+                    future : fetchTodoPerTopic(widget.top!.topic_id!),
+                    builder: (context, snapshot){
+                      if (snapshot.hasData) {
+                        print(snapshot.data);
+                        return Container(
+                            padding: EdgeInsets.fromLTRB(15,10,10,10),
+                            child: ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index)
+                                {
+
+                                  return Column(
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text(snapshot.data![index].title!,
+                                                style: TextStyle(color: Colors.white)),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.check_outlined),
+                                              tooltip: 'Done',
+                                              color: Colors.white,
+                                              onPressed: () {
+                                                showAlertDialogDeleteTodo(context, snapshot.data![index]);
+
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.info_outline_rounded ),
+                                              tooltip: 'Info',
+                                              color: Colors.white,
+                                              onPressed: () {
+                                                showAlertDialogTodo(
+                                                    context,
+                                                    snapshot.data![index].title!,
+                                                    snapshot.data![index].type!,
+                                                    snapshot.data![index].deadline!,
+                                                    snapshot.data![index].description!);
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }
+                            )
+                        );
+                      }
+                      else{
+                        return Center(child: CircularProgressIndicator(color: Colors.white));
+                      }
+                    }
+                ),
               ),
               Row(
                   children: [
@@ -469,108 +631,6 @@ class _materialPageState extends State<materialPage>{
                     );
                   }
               ),
-              Row(
-                  children: [
-                    Expanded(
-                      flex: 6,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'To Do',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        alignment: Alignment.bottomCenter,
-                        icon: const Icon(
-                            Icons.add_circle_outline_outlined, size: 20, color: Colors.white),
-                        tooltip: 'Edit',
-                        onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) =>
-                                  AddTodoPage(text: widget.text,
-                                    text2: widget.text2,
-                                    sub: widget.sub,
-                                    top: widget.top,)));
-                        },
-                      ),
-                    ),
-                  ]
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                height: 2.0,
-                width: 400.0,
-                color: warna,
-              ),
-              FutureBuilder<List<Todo>>(
-                  future : fetchTodoPerTopic(widget.top!.topic_id!),
-                  builder: (context, snapshot){
-                    if (snapshot.hasData) {
-                      print(snapshot.data);
-                      return Container(
-                          padding: EdgeInsets.fromLTRB(15,10,10,10),
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (BuildContext context, int index) {
-
-                                return Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(snapshot.data![index].title!,
-                                              style: TextStyle(color: Colors.white)),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            icon: const Icon(Icons.check_outlined),
-                                            tooltip: 'Done',
-                                            color: Colors.white,
-                                            onPressed: () {
-                                              //showAlertDialogDeleteTodo(context, snapshot.data![index]);
-
-                                            },
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            icon: const Icon(Icons.info_outline_rounded ),
-                                            tooltip: 'Info',
-                                            color: Colors.white,
-                                            onPressed: () {
-                                              showAlertDialogTodo(
-                                                  context,
-                                                  snapshot.data![index].title!,
-                                                  snapshot.data![index].type!,
-                                                  snapshot.data![index].deadline!,
-                                                  snapshot.data![index].description!);
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }
-                          )
-                      );
-                    }
-                    else{
-                      return Center(child: CircularProgressIndicator(color: Colors.white));
-                    }
-                  }
-              )
             ],
           ),
         ),
