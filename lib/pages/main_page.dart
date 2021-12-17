@@ -508,82 +508,80 @@ class _MainPageState extends State<MainPage> {
 
           body: TabBarView(
             children:  [
-              Expanded(
-                  child:
               FutureBuilder<List<Subjects>>(
-                future : fetchSubjects(widget.text),
-                builder: (context, snapshot){
+                  future : fetchSubjects(widget.text),
+                  builder: (context, snapshot){
 
-                  if (snapshot.hasData) {
-                    return Container(
-                          padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
-                            child: StaggeredGridView.countBuilder(
-                                itemCount: snapshot.data!.length,
-                                  crossAxisCount: 4,
-                                  itemBuilder: (BuildContext context, int index) => new Container(
-                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Color(0xFF383751),
-                                      ),
-                                      child: GestureDetector(
-                                          onTap: (){
-                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
-                                                text2: widget.text, sub: snapshot.data![index].name!)));
-                                          },
-                                          child: Column(
-                                            children: <Widget>
-                                            [
-                                              Row(
-                                                  children :[
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: SingleChildScrollView(
-                                                          scrollDirection: Axis.horizontal,
-                                                          child: Text(snapshot.data![index].name!,
-                                                            textAlign: TextAlign.left,
-                                                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
-                                                          ),
-                                                        )
-                                                    ),
-
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                        iconSize: 17,
-                                                        color: Colors.white,
-                                                        icon: const Icon(Icons.edit_outlined),
-                                                        tooltip: 'Edit',
-                                                        onPressed: () {
-                                                          showAlertDialogEdit(context, snapshot.data![index]);
-                                                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                                                        },
-                                                      ),
-                                                    ),
-
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                        iconSize: 17,
-                                                        color: Colors.white,
-                                                        icon: const Icon(Icons
-                                                            .delete_outline_rounded),
-                                                        tooltip: 'Delete',
-                                                        onPressed: () {
-                                                          showAlertDialogDelete(context, snapshot.data![index]);
-
-                                                        },
-                                                      ),
-                                                    )
-                                                  ]
+                    if (snapshot.hasData) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
+                        child: StaggeredGridView.countBuilder(
+                          itemCount: snapshot.data!.length,
+                          crossAxisCount: 4,
+                          itemBuilder: (BuildContext context, int index) => new Container(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0xFF383751),
+                            ),
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TopicPage(text: snapshot.data![index].subject_id!,
+                                    text2: widget.text, sub: snapshot.data![index].name!)));
+                              },
+                              child: Column(
+                                children: <Widget>
+                                [
+                                  Row(
+                                      children :[
+                                        Expanded(
+                                            flex: 4,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(snapshot.data![index].name!,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                                                height: 2.0,
-                                                width: 400.0,
-                                                color: warna,
-                                              ),
-                                              /*FutureBuilder<List<Topic>>(
+                                            )
+                                        ),
+
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            iconSize: 17,
+                                            color: Colors.white,
+                                            icon: const Icon(Icons.edit_outlined),
+                                            tooltip: 'Edit',
+                                            onPressed: () {
+                                              showAlertDialogEdit(context, snapshot.data![index]);
+                                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                            },
+                                          ),
+                                        ),
+
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            iconSize: 17,
+                                            color: Colors.white,
+                                            icon: const Icon(Icons
+                                                .delete_outline_rounded),
+                                            tooltip: 'Delete',
+                                            onPressed: () {
+                                              showAlertDialogDelete(context, snapshot.data![index]);
+
+                                            },
+                                          ),
+                                        )
+                                      ]
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                    height: 2.0,
+                                    width: 400.0,
+                                    color: warna,
+                                  ),
+                                  /*FutureBuilder<List<Topic>>(
                                                     future : fetchTopicMain(2),
                                                     builder: (context, snapshot){
 
@@ -631,77 +629,75 @@ class _MainPageState extends State<MainPage> {
                                                       }
                                                     }
                                                 ),*/
-                                            ],
-                                          ),
-                                          ),
-                                  ),
-                                  staggeredTileBuilder: (int index) =>
-                                  new StaggeredTile.count(2, index.isEven ? 3 : 2),
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                ),
-                    );
-                  }
+                                ],
+                              ),
+                            ),
+                          ),
+                          staggeredTileBuilder: (int index) =>
+                          new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                      );
+                    }
 
-                  else{
-                    return Center(child: CircularProgressIndicator(color: Colors.white));
+                    else{
+                      return Center(child: CircularProgressIndicator(color: Colors.white));
+                    }
                   }
-                }
-              )
               ),
-              Expanded(child:
               FutureBuilder<List<Todo>>(
                   future : fetchAllTodo(widget.text),
                   builder: (context, snapshot){
                     if (snapshot.hasData) {
                       return Container(
-                        padding: EdgeInsets.fromLTRB(15,10,10,10),
-                        child: ListView.builder(
+                          padding: EdgeInsets.fromLTRB(15,10,10,10),
+                          child: ListView.builder(
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext context, int index) {
 
                                 return Column(
+                                  children: <Widget>[
+                                    Row(
                                       children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              flex: 6,
-                                                child: Text(snapshot.data![index].title!,
-                                                    style: TextStyle(color: Colors.white)),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                icon: const Icon(Icons.check_outlined),
-                                                tooltip: 'Done',
-                                                color: Colors.white,
-                                                onPressed: () {
-                                                  showAlertDialogDeleteTodo(context, snapshot.data![index]);
-
-                                                },
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                icon: const Icon(Icons.info_outline_rounded ),
-                                                tooltip: 'Info',
-                                                color: Colors.white,
-                                                onPressed: () {
-                                                  showAlertDialogTodo(
-                                                      context,
-                                                      snapshot.data![index].title!,
-                                                      snapshot.data![index].type!,
-                                                      snapshot.data![index].deadline!,
-                                                      snapshot.data![index].description!);
-                                                },
-                                              ),
-                                            )
-                                          ],
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(snapshot.data![index].title!,
+                                              style: TextStyle(color: Colors.white)),
                                         ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            icon: const Icon(Icons.check_outlined),
+                                            tooltip: 'Done',
+                                            color: Colors.white,
+                                            onPressed: () {
+                                              showAlertDialogDeleteTodo(context, snapshot.data![index]);
+
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            icon: const Icon(Icons.info_outline_rounded ),
+                                            tooltip: 'Info',
+                                            color: Colors.white,
+                                            onPressed: () {
+                                              showAlertDialogTodo(
+                                                  context,
+                                                  snapshot.data![index].title!,
+                                                  snapshot.data![index].type!,
+                                                  snapshot.data![index].deadline!,
+                                                  snapshot.data![index].description!);
+                                            },
+                                          ),
+                                        )
                                       ],
-                                    );
+                                    ),
+                                  ],
+                                );
                               }
                           )
                       );
@@ -711,7 +707,6 @@ class _MainPageState extends State<MainPage> {
                     }
                   }
               )
-              ),
 
             ],
 
