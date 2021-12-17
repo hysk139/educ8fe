@@ -124,7 +124,7 @@ class _materialPageState extends State<materialPage>{
     }
     else{
       _controller = YoutubePlayerController(
-        initialVideoId: YoutubePlayer.convertUrlToId(widget.top!.video!)!,
+        initialVideoId: widget.top!.video!,
         flags: YoutubePlayerFlags(
           autoPlay: false,
           mute: false,
